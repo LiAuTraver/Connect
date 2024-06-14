@@ -41,13 +41,27 @@ find_package(Qt${QT_VERSION_MAJOR}
 
 find_package(fmt CONFIG REQUIRED)
 find_package(absl CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+set(TARGET_LINK_PACKAGES
+        fmt::fmt
+        absl::base
+        absl::log
+        absl::any
+        nlohmann_json::nlohmann_json
+)
 set(INCLUDE ${CMAKE_SOURCE_DIR}/include)
 set(SOURCE ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_FILE
-        src/main.cpp
-        ${SOURCE}/mainmenu.cpp
-        ${SOURCE}/mainmenu.hpp
-        ${SOURCE}/mainmenu.ui
+        src/menu.cpp
+        src/menu.hpp
+        src/menu.ui
+        src/mainwindow.cpp
+        src/mainwindow.hpp
+        src/mainwindow.ui
+        include/config.hpp
+        src/game.cpp
+        src/game.hpp
+        src/game.ui
 )
 set(PCH ${CMAKE_SOURCE_DIR}/pch)
 set(GLOBAL_PCH_HEADER
@@ -86,9 +100,7 @@ target_include_directories(Connect PUBLIC
         ${CMAKE_SOURCE_DIR}
 )
 target_link_libraries(Connect
-        absl::any
-        absl::log
-        fmt::fmt
+    ${TARGET_LINK_PACKAGES}
 )
 
 target_precompile_headers(Connect PRIVATE
