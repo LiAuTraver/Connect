@@ -1,6 +1,6 @@
 #pragma once
 
-#include <pch/qWidgets.hh>
+#include "pch/qt.widgets.hh"
 #include "include/config.hpp"
 #include "menu.hpp"
 #include "game.hpp"
@@ -18,10 +18,13 @@ Q_OBJECT
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow() override;
-
+private:
+	static CONNECT_FORCE_INLINE void destroyChildWidget(QWidget* childWidget);
 private:
 	Connect::Ui::MainWindow *ui;
 	Connect::Menu* menu;
 	Connect::Game* game;
+private slots:
+	void startGame();
 };
 CONNECT_NAMESPACE_END

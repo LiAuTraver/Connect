@@ -32,7 +32,7 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
-
+[Bb]uild/
 snakeRebuild/
 
 # Clion-Cmake

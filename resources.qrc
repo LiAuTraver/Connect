@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="bread.png">Resources/images/bread.png</file>
+        <file alias="brick.png">Resources/images/brick.png</file>
+        <file alias="winmusic.mp3">Resources/sounds/winmusic.mp3</file>
+    </qresource>
+</RCC>

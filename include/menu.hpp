@@ -1,7 +1,7 @@
 #pragma once
 
-#include <pch/qWidgets.hh>
-#include <pch/absl.log.hh>
+#include "pch/qt.widgets.hh"
+#include "pch/absl.log.hh"
 #include "include/config.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -18,8 +18,10 @@ public:
 	explicit Menu(QWidget *parent = nullptr);
 
 	~Menu() override;
-
+signals:
+	void OnStartButtonClicked();
 private:
 	Ui::Menu *ui;
+	static void debug();
 };
 CONNECT_NAMESPACE_END

@@ -52,22 +52,31 @@ set(TARGET_LINK_PACKAGES
 set(INCLUDE ${CMAKE_SOURCE_DIR}/include)
 set(SOURCE ${CMAKE_SOURCE_DIR}/src)
 set(INCLUDE_FILE
-        src/menu.cpp
-        src/menu.hpp
-        src/menu.ui
-        src/mainwindow.cpp
-        src/mainwindow.hpp
-        src/mainwindow.ui
         include/config.hpp
-        src/game.cpp
-        src/game.hpp
-        src/game.ui
+        ViewModels/menu.cpp
+        include/menu.hpp
+        ViewModels/menu.ui
+        Views/mainwindow.cpp
+        include/mainwindow.hpp
+        Views/mainwindow.ui
+        ViewModels/game.cpp
+        include/game.hpp
+        ViewModels/game.ui
+        include/Block.hpp
+        Models/Block.cpp
+        include/Blocks.hpp
+        Services/Blocks.cpp
+        Models/Point.cpp
+        include/Point.hpp
+        Helpers/NotImplementedException.cpp
+        include/NotImplementedException.hpp
 )
 set(PCH ${CMAKE_SOURCE_DIR}/pch)
 set(GLOBAL_PCH_HEADER
-        ${PCH}/qCore.hh
-        ${PCH}/qWidgets.hh
-        ${PCH}/qGui.hh
+        ${PCH}/qt.core.hh
+        ${PCH}/qt.widgets.hh
+        ${PCH}/qt.gui.hh
+        ${PCH}/qt.multimedia.hh
         ${PCH}/std.io.hh
         ${PCH}/std.container.hh
         ${PCH}/std.algorithm.hh
@@ -85,21 +94,25 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Multimedia
         REQUIRED)
 
-add_executable(Connect src/main.cpp
+add_executable(Connect
+        main.cpp
+        resources.qrc
         ${INCLUDE_FILE}
 )
 
-target_link_libraries(Connect
+target_link_libraries(Connect PRIVATE
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt::Multimedia
 )
 target_include_directories(Connect PUBLIC
         ${CMAKE_SOURCE_DIR}
 )
-target_link_libraries(Connect
+target_link_libraries(Connect PRIVATE
     ${TARGET_LINK_PACKAGES}
 )
 
