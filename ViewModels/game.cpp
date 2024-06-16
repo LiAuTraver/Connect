@@ -4,6 +4,9 @@
 #include <include/Point.hpp>
 #include <include/NotImplementedException.hpp>
 
+// dunno why but must put it here otherwise linking error
+qint64 Connect::Game::pausedTime = 0;
+
 Connect::Game::Game(QWidget *parent) :
 		QWidget(parent),
 		ui(new Ui::Game),
@@ -12,11 +15,12 @@ Connect::Game::Game(QWidget *parent) :
 		blocks(),
 		previousButton(-1, -1),
 //		soundEffect(new QSoundEffect(this)),
+		isPaused(false),
 		elapsedTimer(),
 		mediaPlayer(new QMediaPlayer(this)),
 		timer(new QTimer(this)),
 		timeLabel(new QLabel(this)),
-
+		pauseButton(new QPushButton(this)),
 		startTime() {
 	this->OnInitialize();
 	this->setLayout(this->gridLayout);
@@ -29,13 +33,14 @@ Connect::Game::~Game() {
 }
 
 void Connect::Game::initializeGrid() {
-	blocks.reset(1, 2);
+	blocks.reset(2, 2);
 	buttons.resize(blocks.getRows());
 	for (auto &rowButtons: buttons)
 		rowButtons.resize(blocks.getCols());
 	isButtonEliminated.resize(blocks.getRows());
 	for (auto &rowButtonsClicked: isButtonEliminated)
 		rowButtonsClicked.resize(blocks.getCols(), false);
+
 }
 
 void Connect::Game::onButtonPressed(Point point) {
@@ -97,7 +102,7 @@ void Connect::Game::initializeSoundEffect() {
 //		soundEffect = new QSoundEffect(this);
 //	}
 //	qDebug() << "playing sound...";
-//	soundEffect->setSource(QUrl("qrc:/Resources/sounds/winmusic.mp3"));
+//	soundEffect->setSource(QUrl("qrc:/Resources/audios/winmusic.mp3"));
 //	qDebug() << "Play sound finished.";
 //	soundEffect->setVolume(0.5);
 	if (not mediaPlayer)
@@ -105,12 +110,15 @@ void Connect::Game::initializeSoundEffect() {
 
 }
 
-void Connect::Game::initializeConnections() {
+void Connect::Game::initializeLayout() {
+	this->gridLayout->addWidget(timeLabel, 0, 1);
+	this->gridLayout->addWidget(pauseButton, 0, 2);
+	QWidget::connect(pauseButton, &QPushButton::clicked, this, &Connect::Game::togglePauseResume);
 	for (auto row = 0LL; row < blocks.getRows(); row++) {
 		for (auto col = 0LL; col < blocks.getCols(); col++) {
 			auto point = Point(row, col);
 			getButtonAt(point) = new QPushButton(QIcon(QString{blocks(point).data()}), "", this);
-			gridLayout->addWidget(getButtonAt(point), row, col);
+			gridLayout->addWidget(getButtonAt(point), row + 1, col);
 			// CANNOT capture `row` and `col` by reference; the lambda expression might be executed AFTER the loop because it's a connection
 			// Asynchronous signal-slot mechanism problem, also `onButtonPressed` cannot ref row and col.
 			// or it'll be garbage value. vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -125,17 +133,17 @@ CONNECT_FORCE_INLINE void Connect::Game::OnInitialize() {
 	this->initializeGrid();
 	this->initializeImages();
 	this->initializeSoundEffect();
-	this->initializeConnections();
 	this->initializeTime();
+	this->initializeLayout();
 }
 
 void Connect::Game::initializeImages() {
 	this->blocks.initializeImagePaths();
-	this->blocks.initializeImageGrid(1, 2);
+	this->blocks.initializeImageGrid(10, 10);
 }
 
 void Connect::Game::updateElapsedTime() {
-	qint64 elapsedMilliseconds = elapsedTimer.elapsed();
+	qint64 elapsedMilliseconds = elapsedTimer.elapsed() + pausedTime;
 	timeLabel->setText(QString("Elapsed time: %1:%2.%3")
 			                   .arg(elapsedMilliseconds / 60000, 2, 10, QChar('0'))
 			                   .arg((elapsedMilliseconds % 60000) / 1000, 2, 10, QChar('0'))
@@ -145,19 +153,23 @@ void Connect::Game::updateElapsedTime() {
 }
 
 void Connect::Game::initializeTime() {
+	this->isPaused = false;
 	this->startTime = QTime::currentTime();
 	this->timer->setInterval(100);
+	this->pauseButton->setText("Pause");
+	this->elapsedTimer.start();
+	this->timer->start();
+	Connect::Game::pausedTime = 0;
 	QWidget::connect(this->timer, &QTimer::timeout, this, &Connect::Game::updateElapsedTime);
-	elapsedTimer.start();
-	timer->start();
-	this->gridLayout->addWidget(timeLabel, 1, 3);
+	// must be toggled not clicked.
+	QWidget::connect(this->pauseButton, &QPushButton::toggled, this, &Connect::Game::togglePauseResume);
 }
 
 void Connect::Game::checkGameCondition() {
 	if (not isAllButtonEliminated())return;
 	// win condition met.
 	timer->stop();
-	QWidget::disconnect(this->timer,&QTimer::timeout, this, &Connect::Game::updateElapsedTime);
+	QWidget::disconnect(this->timer, &QTimer::timeout, this, &Connect::Game::updateElapsedTime);
 	timeLabel->setText(timeLabel->text() + " - You Win!");
 }
 
@@ -169,3 +181,25 @@ CONNECT_INLINE bool Connect::Game::isAllButtonEliminated() const {
 				return false;
 	return true;
 }
+
+void Connect::Game::togglePauseResume() {
+
+	if (isPaused) {
+//		elapsedTimer += pausedTime; // can't do that. :(
+		elapsedTimer.restart();
+		timer->start();
+		pauseButton->setText("Pause");
+		for (auto &rowButtons: buttons)
+			for (auto &button: rowButtons)
+				button->setEnabled(true);
+	} else {
+		Connect::Game::pausedTime += elapsedTimer.elapsed();
+		timer->stop();
+		pauseButton->setText("Resume");
+		for (auto &rowButtons: buttons)
+			for (auto &button: rowButtons)
+				button->setEnabled(false);
+	}
+	isPaused = !isPaused;
+}
+

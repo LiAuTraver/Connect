@@ -1,11 +1,11 @@
 #pragma once
 
-#include "pch/qt.widgets.hh"
-#include "include/config.hpp"
-#include "pch/std.container.hh"
+#include <pch/qt.widgets.hh>
+#include <include/config.hpp>
+#include <pch/std.container.hh>
+#include <pch/qt.multimedia.hh>
 #include "Blocks.hpp"
 #include "Point.hpp"
-#include <pch/qt.multimedia.hh>
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -31,14 +31,15 @@ private:
 	QTimer *timer;
 	QElapsedTimer elapsedTimer;
 	QLabel *timeLabel;
+	QPushButton* pauseButton;
 	QTime startTime;
 	QVector<QVector<QPushButton *>> buttons;
 	QVector<QVector<bool>> isButtonEliminated;
 //	QSoundEffect *soundEffect;
 	Point previousButton{-1, -1};
 	Blocks blocks;
-
-
+	bool isPaused;
+	static qint64 pausedTime;
 private:
 	_NODISCARD inline QPushButton *&getButtonAt(const Point & point) noexcept(noexcept(buttons[point.y][point.x]));
 
@@ -68,6 +69,10 @@ private:
 
 	void checkGameCondition();
 
+	void initializeLayout();
+
 	_NODISCARD bool isAllButtonEliminated() const;
+
+	void togglePauseResume();
 };
 CONNECT_NAMESPACE_END
