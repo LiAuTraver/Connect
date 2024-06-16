@@ -24,18 +24,21 @@
 #define extends :
 #endif
 
+#define CONNECT_INLINE inline
+
 #if defined(__GNUC__) || defined (__clang__)
 #define CONNECT_FORCE_INLINE inline __attribute__((always_inline))
+#elifdef FORCEINLINE
+#define CONNECT_FORCE_INLINE FORCEINLINE
 #else
-#define CONNECT_FORCE_INLINE inline
+#define CONNECT_FORCE_INLINE CONNECT_INLINE
 #endif
 
-#define CONNECT_INLINE inline
 #ifndef _NODISCARD
 #define _NODISCARD [[nodiscard]]
 #endif
 
-#define CONNECT_IMAGES_FOLDER ":/Resources/images/"
+#define CONNECT_IMAGES_FOLDER ":/"
 #define CONNECT_IMAGE_PATH(image) CONNECT_IMAGES_FOLDER image
 
 #define CONNECT_CONSTEXPR constexpr

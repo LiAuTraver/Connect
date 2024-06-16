@@ -27,18 +27,22 @@ public:
 private:
 	Ui::Game *ui;
 	QGridLayout *gridLayout;
+	QMediaPlayer *mediaPlayer;
+	QTimer *timer;
+	QElapsedTimer elapsedTimer;
+	QLabel *timeLabel;
+	QTime startTime;
 	QVector<QVector<QPushButton *>> buttons;
 	QVector<QVector<bool>> isButtonEliminated;
-	QMediaPlayer* mediaPlayer;
 //	QSoundEffect *soundEffect;
 	Point previousButton{-1, -1};
 	Blocks blocks;
 
 
 private:
-	_NODISCARD inline QPushButton *&getButtonAt(const Point &) noexcept;
+	_NODISCARD inline QPushButton *&getButtonAt(const Point & point) noexcept(noexcept(buttons[point.y][point.x]));
 
-	_NODISCARD inline bool &getEliminatedButtonAt(const Point &) noexcept;
+	_NODISCARD inline bool &getEliminatedButtonAt(const Point & point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
 
 	_NODISCARD inline bool getEliminatedButtonAt(const Point &) const noexcept;
 
@@ -46,7 +50,7 @@ private:
 
 	void initializeGrid();
 
-	bool isSame(Point &) const noexcept;
+	_NODISCARD bool isSame(Point &) noexcept;
 
 	void onButtonEliminate(QPushButton *button);
 
@@ -56,6 +60,14 @@ private:
 
 	void initializeImages();
 
-	void OnInitialize()
+	void initializeTime();
+
+	CONNECT_FORCE_INLINE void OnInitialize();
+
+	void updateElapsedTime();
+
+	void checkGameCondition();
+
+	_NODISCARD bool isAllButtonEliminated() const;
 };
 CONNECT_NAMESPACE_END

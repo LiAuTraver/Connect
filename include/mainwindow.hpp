@@ -17,14 +17,20 @@ Q_OBJECT
 
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
+
 	~MainWindow() override;
+
 private:
-	static CONNECT_FORCE_INLINE void destroyChildWidget(QWidget* childWidget);
+	static CONNECT_FORCE_INLINE void destroyChildWidget(QWidget *childWidget);
+
 private:
 	Connect::Ui::MainWindow *ui;
-	Connect::Menu* menu;
-	Connect::Game* game;
+	Connect::Menu *menu;
+	Connect::Game *game;
 private slots:
-	void startGame();
+
+	void onGameStart();
+
+	void onGameExit();
 };
 CONNECT_NAMESPACE_END
