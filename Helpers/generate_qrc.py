@@ -3,11 +3,11 @@ import shutil
 import sys
 
 # Directories
-RESOURCES = []
-IMAGES = []
-AUDIOS = []
-QRC = []
-QRC_BAK =[]
+RESOURCES: str = ''
+IMAGES: str = ''
+AUDIOS: str = ''
+QRC: str = ''
+QRC_BAK: str = ''
 
 
 # Function to add files to qrc content
@@ -15,8 +15,9 @@ def add_files_to_qrc(directory, alias_prefix, qrc_lines):
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.wav', '.mp3', '.ogg')):
-                relative_path = os.path.relpath(os.path.join(root, file), directory)
-                relative_path = relative_path.replace("\\", "/")  # Ensure forward slashes
+                # here we're guaranteed that the `root` and `file` is `LiteralString` (a.k.a. `str`) so just cast them
+                # Ensure forward slashes
+                relative_path = os.path.relpath(str(os.path.join(root, file)), directory).replace("\\", "/")
                 alias = os.path.join(alias_prefix, os.path.basename(file)).replace("\\", "/")
                 qrc_lines.append(f'        <file alias="{alias}">{directory}{relative_path}</file>\n')
 

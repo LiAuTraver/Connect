@@ -1,11 +1,11 @@
 #pragma once
 
-#include <pch/qt.widgets.hh>
-#include <include/config.hpp>
-#include <pch/std.container.hh>
-#include <pch/qt.multimedia.hh>
-#include "Blocks.hpp"
-#include "Point.hpp"
+#include "pch/qt.widgets.hh"
+#include "include/config.hpp"
+#include "pch/std.container.hh"
+#include "pch/qt.multimedia.hh"
+#include "Services/Blocks.hpp"
+#include "Models/Point.hpp"
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -41,11 +41,11 @@ private:
 	bool isPaused;
 	static qint64 pausedTime;
 private:
-	_NODISCARD inline QPushButton *&getButtonAt(const Point & point) noexcept(noexcept(buttons[point.y][point.x]));
+	_NODISCARD CONNECT_INLINE QPushButton *&getButtonAt(const Point & point) noexcept(noexcept(buttons[point.y][point.x]));
 
-	_NODISCARD inline bool &getEliminatedButtonAt(const Point & point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
+	_NODISCARD CONNECT_INLINE bool &getEliminatedButtonAt(const Point & point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
 
-	_NODISCARD inline bool getEliminatedButtonAt(const Point &) const noexcept;
+	_NODISCARD CONNECT_MAYBE_UNUSED CONNECT_INLINE bool getEliminatedButtonAt(const Point &) const noexcept;
 
 	void onButtonPressed(Point);
 
@@ -53,11 +53,9 @@ private:
 
 	_NODISCARD bool isSame(Point &) noexcept;
 
-	void onButtonEliminate(QPushButton *button);
+	static void onButtonEliminate(QPushButton *button);
 
 	void initializeSoundEffect();
-
-	void initializeConnections();
 
 	void initializeImages();
 
@@ -68,6 +66,8 @@ private:
 	void updateElapsedTime();
 
 	void checkGameCondition();
+
+	void win();
 
 	void initializeLayout();
 

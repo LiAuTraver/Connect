@@ -2,8 +2,8 @@
 
 #include "pch/qt.widgets.hh"
 #include "include/config.hpp"
-#include "menu.hpp"
-#include "game.hpp"
+#include "ViewModels/menu.hpp"
+#include "ViewModels/game.hpp"
 
 QT_BEGIN_NAMESPACE
 CONNECT_NAMESPACE_BEGIN

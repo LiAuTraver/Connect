@@ -24,8 +24,21 @@
 #define extends :
 #endif
 
-#define CONNECT_INLINE inline
+#ifndef abstract
+#define abstract
+#endif
 
+#ifndef interface
+#define interface class
+#endif
+
+#define CONNECT_INLINE inline
+#if __has_cpp_attribute(maybe_unused)
+#define CONNECT_MAYBE_UNUSED [[maybe_unused]]
+#else
+// for now, fixme
+#define CONNECT_MAYBE_UNUSED [[maybe_unused]]
+#endif
 #if defined(__GNUC__) || defined (__clang__)
 #define CONNECT_FORCE_INLINE inline __attribute__((always_inline))
 #elifdef FORCEINLINE
@@ -38,7 +51,7 @@
 #define _NODISCARD [[nodiscard]]
 #endif
 
-#define CONNECT_IMAGES_FOLDER ":/"
+#define CONNECT_IMAGES_FOLDER ":/images/"
 #define CONNECT_IMAGE_PATH(image) CONNECT_IMAGES_FOLDER image
 
 #define CONNECT_CONSTEXPR constexpr

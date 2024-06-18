@@ -76,22 +76,55 @@ set(TARGET_LINK_PACKAGES
 
 set(PCH ${CMAKE_SOURCE_DIR}/pch)
 file(GLOB GLOBAL_PCH_HEADER "${PCH}/*.hh")
-file(GLOB_RECURSE SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-file(GLOB_RECURSE QT_UI_FILE "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")
-file(GLOB_RECURSE HEADER_FILE "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp")
+# Define a function to collect and filter files
+function(collect_and_filter_files out_var fileext)
+    file(GLOB_RECURSE files "${CMAKE_CURRENT_SOURCE_DIR}/*.${fileext}")
+    list(FILTER files EXCLUDE REGEX "/build/")
+    list(FILTER files EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
+    list(FILTER files EXCLUDE REGEX "/cmake-vscode-build/")
+    list(FILTER files EXCLUDE REGEX "/Test/")
+    set(${out_var} ${files} PARENT_SCOPE)
+endfunction()
 
-# Exclude specific directories from SOURCE_FILES
-list(FILTER SOURCE_FILE EXCLUDE REGEX "/build/")
-list(FILTER SOURCE_FILE EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
-list(FILTER SOURCE_FILE EXCLUDE REGEX "/cmake-vscode-build/")
+# Collect and filter the files
+#collect_and_filter_files(SOURCE_FILE cpp)
+#collect_and_filter_files(QT_UI_FILE ui)
+#collect_and_filter_files(HEADER_FILE hpp)
+#
+#message(STATUS "SOURCE_FILE: ${SOURCE_FILE}")
+#message(STATUS "HEADER_FILE: ${HEADER_FILE}")
+#message(STATUS "QT_UI_FILE: ${QT_UI_FILE}")
 
-list(FILTER HEADER_FILE EXCLUDE REGEX "/build/")
-list(FILTER HEADER_FILE EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
-list(FILTER HEADER_FILE EXCLUDE REGEX "/cmake-vscode-build/")
+set(SOURCE_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Contracts/IFileService.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/NotImplementedException.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/Parser.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Block.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Point.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.cpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+)
+set(UI_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.ui;
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.ui;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.ui
+)
+set(HEADER_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Contracts/IFileService.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/NotImplementedException.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/Parser.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Block.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Point.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.hpp;
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/config.hpp
+)
 
-list(FILTER QT_UI_FILE EXCLUDE REGEX "/build/")
-list(FILTER QT_UI_FILE EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
-list(FILTER QT_UI_FILE EXCLUDE REGEX "/cmake-vscode-build/")
 
 add_executable(${PROJECT_NAME}
         main.cpp
@@ -119,3 +152,6 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE
 
 # Ensure the build depends on the custom target
 add_dependencies(${PROJECT_NAME} generate_qrc)
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/test_prog.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/clion_gen.cmake)

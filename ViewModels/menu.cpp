@@ -1,4 +1,4 @@
-#include "include/menu.hpp"
+#include "menu.hpp"
 #include "ui_Menu.h"
 
 CONNECT_NAMESPACE_BEGIN

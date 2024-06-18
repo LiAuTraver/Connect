@@ -1,8 +1,8 @@
-#include "include/game.hpp"
+#include <ViewModels/game.hpp>
+#include <Services/Blocks.hpp>
+#include <Models/Point.hpp>
+#include <Helpers/NotImplementedException.hpp>
 #include "ui_Game.h"
-#include <include/Blocks.hpp>
-#include <include/Point.hpp>
-#include <include/NotImplementedException.hpp>
 
 // dunno why but must put it here otherwise linking error
 qint64 Connect::Game::pausedTime = 0;
@@ -33,7 +33,7 @@ Connect::Game::~Game() {
 }
 
 void Connect::Game::initializeGrid() {
-	blocks.reset(2, 2);
+	blocks.reset(5,5, R"(M:\Projects\Connect\Resources\images)");
 	buttons.resize(blocks.getRows());
 	for (auto &rowButtons: buttons)
 		rowButtons.resize(blocks.getCols());
@@ -58,8 +58,8 @@ void Connect::Game::onButtonPressed(Point point) {
 		// animation of elimination
 		this->getEliminatedButtonAt(point) = true;
 		this->getEliminatedButtonAt(previousButton) = true;
-		onButtonEliminate(getButtonAt(point));
-		onButtonEliminate(getButtonAt(previousButton));
+		Connect::Game::onButtonEliminate(getButtonAt(point));
+		Connect::Game::onButtonEliminate(getButtonAt(previousButton));
 	} else {
 		qDebug() << "not the same type.";
 		// todo:change back texture
@@ -72,9 +72,9 @@ _NODISCARD bool Connect::Game::isSame(Point &point) noexcept {
 }
 
 void Connect::Game::onButtonEliminate(QPushButton *button) {
-	auto effect = new QGraphicsOpacityEffect(button);
-	button->setGraphicsEffect(effect);
-	auto animation = new QPropertyAnimation(effect, "opacity");
+	auto buttonOpacityEffect = new QGraphicsOpacityEffect(button);
+	button->setGraphicsEffect(buttonOpacityEffect);
+	auto animation = new QPropertyAnimation(buttonOpacityEffect, "opacity");
 	animation->setDuration(1000);
 	animation->setStartValue(1);
 	animation->setEndValue(0);
@@ -93,7 +93,8 @@ bool &Connect::Game::getEliminatedButtonAt(
 	return isButtonEliminated[point.y][point.x];
 }
 
-bool Connect::Game::getEliminatedButtonAt(const Connect::Point &point) const noexcept {
+_NODISCARD CONNECT_MAYBE_UNUSED CONNECT_INLINE bool
+Connect::Game::getEliminatedButtonAt(const Connect::Point &point) const noexcept {
 	return isButtonEliminated.at(point.y).at(point.x);
 }
 
@@ -118,7 +119,7 @@ void Connect::Game::initializeLayout() {
 		for (auto col = 0LL; col < blocks.getCols(); col++) {
 			auto point = Point(row, col);
 			getButtonAt(point) = new QPushButton(QIcon(QString{blocks(point).data()}), "", this);
-			gridLayout->addWidget(getButtonAt(point), row + 1, col);
+			gridLayout->addWidget(getButtonAt(point), static_cast<int>(row + 1), static_cast<int>(col));
 			// CANNOT capture `row` and `col` by reference; the lambda expression might be executed AFTER the loop because it's a connection
 			// Asynchronous signal-slot mechanism problem, also `onButtonPressed` cannot ref row and col.
 			// or it'll be garbage value. vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -168,9 +169,7 @@ void Connect::Game::initializeTime() {
 void Connect::Game::checkGameCondition() {
 	if (not isAllButtonEliminated())return;
 	// win condition met.
-	timer->stop();
-	QWidget::disconnect(this->timer, &QTimer::timeout, this, &Connect::Game::updateElapsedTime);
-	timeLabel->setText(timeLabel->text() + " - You Win!");
+	this->win();
 }
 
 CONNECT_INLINE bool Connect::Game::isAllButtonEliminated() const {
@@ -202,4 +201,13 @@ void Connect::Game::togglePauseResume() {
 	}
 	isPaused = !isPaused;
 }
+
+void Connect::Game::win() {
+	timer->stop();
+	QWidget::disconnect(this->timer, &QTimer::timeout, this, &Connect::Game::updateElapsedTime);
+	QWidget::disconnect(this->pauseButton, &QPushButton::toggled, this, &Connect::Game::togglePauseResume);
+	Connect::Game::onButtonEliminate(pauseButton);
+	timeLabel->setText(timeLabel->text() + " - You Win!");
+}
+
 

@@ -1,20 +1,17 @@
-#include <include/Blocks.hpp>
+#include <Services/Blocks.hpp>
 #include <include/config.hpp>
 
-#if 0
-_NODISCARD CONNECT_CONSTEXPR CONNECT_INLINE Connect::Block &
-Connect::Blocks::operator[](size_type row, size_type col) noexcept {
-	return gridBlocks[row][col];
+
+const std::string_view Connect::Blocks::IMAGE_PATH = {std::filesystem::current_path().string() + "Resources/images"};
+
+Connect::Blocks::Blocks() : height(0), width(0), total(0),path(""){}
+
+Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w) {
+	reset(h, w);
 }
 
-Connect::Blocks::Blocks() : height(0), width(0), gridBlocks() {}
-#else
-
-Connect::Blocks::Blocks() : height(0), width(0), total(0) {}
-
-Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w)
-		: height(h), width(w), total(height * width) {
-	imageGrid.resize(total);
+Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w, const std::string_view path) {
+	reset(h, w, path);
 }
 
 void Connect::Blocks::reset() noexcept {
@@ -23,6 +20,7 @@ void Connect::Blocks::reset() noexcept {
 	total = 0;
 	imageGrid.clear();
 	imageSource.clear();
+	path = "";
 }
 
 void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_type w) noexcept {
@@ -31,10 +29,25 @@ void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_
 	total = height * width;
 	imageSource.clear();
 	imageSource.resize(total);
+	path = "";
 }
 
 
-Connect::Blocks::size_type Connect::Blocks::getTotal() noexcept {
+void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_type w, const std::string_view path = Connect::Blocks::IMAGE_PATH) {
+	height = h;
+	width = w;
+	total = height * width;
+	imageSource.clear();
+	imageSource.resize(total);
+	this->path = path;
+	if (path.empty() or path == ""){
+		qDebug() << "Path is empty";
+		return;
+	}
+	this->initializeImagePaths();
+}
+
+_NODISCARD Connect::Blocks::size_type Connect::Blocks::getTotal() noexcept {
 	total = height * width;
 	return total;
 }
@@ -56,8 +69,18 @@ Connect::Blocks::size_type Connect::Blocks::getCols() const noexcept {
 
 void Connect::Blocks::initializeImagePaths() {
 	imageSource.clear();
-	this->imageSource.emplace_back(CONNECT_IMAGE_PATH("bread.png"));
-	this->imageSource.emplace_back(CONNECT_IMAGE_PATH("brick.png"));
+	if(this->path.empty() || not std::filesystem::exists(this->path)){
+		qDebug() << "invalid path: " << path.string();
+//		exit(1);
+	}
+	// recursively search for all files in the directory using std::filesystem
+	for (const auto &entry : std::filesystem::recursive_directory_iterator(path)) {
+		if (entry.is_regular_file()) {
+			imageSource.push_back(entry.path().string());
+		}
+	}
+	qDebug() << "imageSource.size(): " << imageSource.size();
+	qDebug() << "imageSource.at(0): " << imageSource.at(0).c_str();
 }
 
 _NODISCARD const char *Connect::Blocks::generateImagePath() const {
@@ -78,7 +101,4 @@ void Connect::Blocks::initializeImageGrid(size_type row, size_type col) {
 			this->operator()(y, x) = generateImagePath();
 		}
 }
-
-
-#endif
 

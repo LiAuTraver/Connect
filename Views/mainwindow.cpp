@@ -1,4 +1,4 @@
-#include "include/mainwindow.hpp"
+#include "mainwindow.hpp"
 #include "ui_MainWindow.h"
 
 CONNECT_NAMESPACE_BEGIN

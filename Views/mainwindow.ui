@@ -28,7 +28,6 @@
      <string>&amp;File</string>
     </property>
     <addaction name="action_Record"/>
-    <addaction name="action_About"/>
     <addaction name="separator"/>
     <addaction name="action_Quit"/>
    </widget>
@@ -36,6 +35,9 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
+    <addaction name="action_Menu"/>
+    <addaction name="action_Game"/>
+    <addaction name="action_About"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -43,7 +45,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action_Record">
    <property name="text">
-    <string>&amp;Record</string>
+    <string>&amp;Load Record</string>
    </property>
   </action>
   <action name="action_About">
@@ -54,6 +56,16 @@
   <action name="action_Quit">
    <property name="text">
     <string>&amp;Quit</string>
+   </property>
+  </action>
+  <action name="action_Menu">
+   <property name="text">
+    <string>&amp;Menu</string>
+   </property>
+  </action>
+  <action name="action_Game">
+   <property name="text">
+    <string>&amp;Game</string>
    </property>
   </action>
  </widget>

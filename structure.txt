@@ -1,0 +1,91 @@
+.
+├── clion_gen.cmake
+├── cmake-build-debug-visual-studio
+│   ├── abseil_dll.dll
+│   ├── build.ninja
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   ├── cmake_install.cmake
+│   ├── Connect_autogen
+│   ├── Connect.exe
+│   ├── Connect.ilk
+│   ├── Connect.pdb
+│   ├── fmtd.dll
+│   ├── test_autogen
+│   ├── test.exe
+│   ├── test.ilk
+│   └── test.pdb
+├── CMakeLists_old.txt
+├── CMakeLists.txt
+├── CMakeLists.txt.user
+├── cmake-vscode-build
+│   ├── build.ninja
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles
+│   ├── cmake_install.cmake
+│   ├── compile_commands.json
+│   └── Testing
+├── Contracts
+│   └── IFileService.cpp
+├── Helpers
+│   ├── generate_qrc.py
+│   ├── NotImplementedException.cpp
+│   ├── Parser.cpp
+│   └── __pycache__
+├── include
+│   ├── Block.hpp
+│   ├── Blocks.hpp
+│   ├── config.hpp
+│   ├── game.hpp
+│   ├── IFileService.hpp
+│   ├── mainwindow.hpp
+│   ├── menu.hpp
+│   ├── NotImplementedException.hpp
+│   ├── Parser.hpp
+│   └── Point.hpp
+├── main.cpp
+├── Models
+│   ├── Block.cpp
+│   └── Point.cpp
+├── pch
+│   ├── absl.log.hh
+│   ├── fmt.hh
+│   ├── qt.core.hh
+│   ├── qt.gui.hh
+│   ├── qt.multimedia.hh
+│   ├── qt.widgets.hh
+│   ├── qt.xml.hh
+│   ├── std.algorithm.hh
+│   ├── std.concurrency.hh
+│   ├── std.container.hh
+│   ├── std.dynamic.hh
+│   ├── std.error.hh
+│   ├── std.io.hh
+│   ├── std.string.hh
+│   ├── std.time.hh
+│   └── std.utils.hh
+├── Resources
+│   ├── audios
+│   └── images
+├── resources.qrc
+├── resources.qrc.bak
+├── Services
+│   └── Blocks.cpp
+├── structure.txt
+├── Test
+│   └── test.cpp
+├── test_prog.cmake
+├── venv
+│   ├── Lib
+│   ├── pyvenv.cfg
+│   └── Scripts
+├── ViewModels
+│   ├── game.cpp
+│   ├── game.ui
+│   ├── menu.cpp
+│   └── menu.ui
+└── Views
+    ├── mainwindow.cpp
+    └── mainwindow.ui
+
+24 directories, 65 files

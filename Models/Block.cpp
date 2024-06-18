@@ -1,5 +1,5 @@
 
-#include <include/Block.hpp>
+#include <Models/Block.hpp>
 #include <include/config.hpp>
 
 bool Connect::Block::operator==(const Connect::Block &rhs) const {

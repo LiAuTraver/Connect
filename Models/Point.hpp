@@ -1,7 +1,7 @@
 #pragma once
 
-#include "config.hpp"
-
+#include "include/config.hpp"
+#include <pch/qt.core.hh>
 CONNECT_NAMESPACE_BEGIN
 
 struct Point {

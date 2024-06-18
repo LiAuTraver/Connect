@@ -2,6 +2,3 @@
 #pragma once
 
 #include <QtWidgets>
-#include <QToolBar>
-#include <QAction>
-#include <QMessageBox>
