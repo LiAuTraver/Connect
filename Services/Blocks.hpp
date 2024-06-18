@@ -14,16 +14,18 @@ public:
 public:
 	explicit Blocks();
 
+	explicit Blocks(std::nullptr_t);
+
 	explicit Blocks(size_type h, size_type w);
 
-	explicit Blocks(size_type h, size_type w, const std::string_view path);
+	explicit Blocks(size_type h, size_type w, std::string_view path);
 
 public:
 	void reset() noexcept;
 
 	void reset(size_type h, size_type w) noexcept;
 
-	void reset(size_type h, size_type w, const std::string_view path);
+	void reset(size_type h, size_type w, const std::string_view importPath);
 
 	_NODISCARD size_type getTotal() noexcept;
 

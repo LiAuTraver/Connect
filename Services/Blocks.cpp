@@ -4,7 +4,9 @@
 
 const std::string_view Connect::Blocks::IMAGE_PATH = {std::filesystem::current_path().string() + "Resources/images"};
 
-Connect::Blocks::Blocks() : height(0), width(0), total(0),path(""){}
+Connect::Blocks::Blocks() : height(0), width(0), total(0), path("") {}
+
+Connect::Blocks::Blocks(std::nullptr_t) : Blocks() {}
 
 Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w) {
 	reset(h, w);
@@ -33,14 +35,15 @@ void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_
 }
 
 
-void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_type w, const std::string_view path = Connect::Blocks::IMAGE_PATH) {
+void Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_type w,
+                            const std::string_view importPath = Connect::Blocks::IMAGE_PATH) {
 	height = h;
 	width = w;
 	total = height * width;
 	imageSource.clear();
 	imageSource.resize(total);
-	this->path = path;
-	if (path.empty() or path == ""){
+	this->path = importPath;
+	if (importPath.empty() or importPath == "") {
 		qDebug() << "Path is empty";
 		return;
 	}
@@ -69,12 +72,12 @@ Connect::Blocks::size_type Connect::Blocks::getCols() const noexcept {
 
 void Connect::Blocks::initializeImagePaths() {
 	imageSource.clear();
-	if(this->path.empty() || not std::filesystem::exists(this->path)){
+	if (this->path.empty() || not std::filesystem::exists(this->path)) {
 		qDebug() << "invalid path: " << path.string();
 //		exit(1);
 	}
 	// recursively search for all files in the directory using std::filesystem
-	for (const auto &entry : std::filesystem::recursive_directory_iterator(path)) {
+	for (const auto &entry: std::filesystem::recursive_directory_iterator(path)) {
 		if (entry.is_regular_file()) {
 			imageSource.push_back(entry.path().string());
 		}
@@ -101,4 +104,5 @@ void Connect::Blocks::initializeImageGrid(size_type row, size_type col) {
 			this->operator()(y, x) = generateImagePath();
 		}
 }
+
 

@@ -11,8 +11,12 @@ Connect::Game::Game(QWidget *parent) :
 		QWidget(parent),
 		ui(new Ui::Game),
 		buttons(QVector<QVector<QPushButton *>>{}),
-		gridLayout(new QGridLayout(this)),
-		blocks(),
+		mainLayout(new QVBoxLayout(this)),
+		statusWidget(new QWidget(this)),
+		gameWidget(new QWidget(this)),
+		statusLayout(new QHBoxLayout(nullptr)),
+		gameLayout(new QGridLayout(nullptr)),
+		blocks(nullptr),
 		previousButton(-1, -1),
 //		soundEffect(new QSoundEffect(this)),
 		isPaused(false),
@@ -23,7 +27,6 @@ Connect::Game::Game(QWidget *parent) :
 		pauseButton(new QPushButton(this)),
 		startTime() {
 	this->OnInitialize();
-	this->setLayout(this->gridLayout);
 	ui->setupUi(this);
 }
 
@@ -32,8 +35,8 @@ Connect::Game::~Game() {
 //	delete textEditBlock; // needed or not(?)
 }
 
-void Connect::Game::initializeGrid() {
-	blocks.reset(5,5, R"(M:\Projects\Connect\Resources\images)");
+void Connect::Game::initializeImageGrid() {
+	blocks.reset(5, 5, R"(M:\Projects\Connect\Resources\images)");
 	buttons.resize(blocks.getRows());
 	for (auto &rowButtons: buttons)
 		rowButtons.resize(blocks.getCols());
@@ -112,14 +115,17 @@ void Connect::Game::initializeSoundEffect() {
 }
 
 void Connect::Game::initializeLayout() {
-	this->gridLayout->addWidget(timeLabel, 0, 1);
-	this->gridLayout->addWidget(pauseButton, 0, 2);
+
+	this->statusLayout->addWidget(this->timeLabel);
+	this->statusLayout->addWidget(this->pauseButton);
+	this->mainLayout->addWidget(this->statusWidget);
+	this->statusWidget->setLayout(this->statusLayout);
 	QWidget::connect(pauseButton, &QPushButton::clicked, this, &Connect::Game::togglePauseResume);
 	for (auto row = 0LL; row < blocks.getRows(); row++) {
 		for (auto col = 0LL; col < blocks.getCols(); col++) {
 			auto point = Point(row, col);
 			getButtonAt(point) = new QPushButton(QIcon(QString{blocks(point).data()}), "", this);
-			gridLayout->addWidget(getButtonAt(point), static_cast<int>(row + 1), static_cast<int>(col));
+			gameLayout->addWidget(getButtonAt(point), static_cast<int>(row), static_cast<int>(col));
 			// CANNOT capture `row` and `col` by reference; the lambda expression might be executed AFTER the loop because it's a connection
 			// Asynchronous signal-slot mechanism problem, also `onButtonPressed` cannot ref row and col.
 			// or it'll be garbage value. vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -128,10 +134,13 @@ void Connect::Game::initializeLayout() {
 			});
 		}
 	}
+	this->gameWidget->setLayout(gameLayout);
+	this->mainLayout->addWidget(this->gameWidget);
+	this->setLayout(mainLayout);
 }
 
 CONNECT_FORCE_INLINE void Connect::Game::OnInitialize() {
-	this->initializeGrid();
+	this->initializeImageGrid();
 	this->initializeImages();
 	this->initializeSoundEffect();
 	this->initializeTime();

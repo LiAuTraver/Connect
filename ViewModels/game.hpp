@@ -26,12 +26,16 @@ public:
 	using size_type = qsizetype;
 private:
 	Ui::Game *ui;
-	QGridLayout *gridLayout;
+	QVBoxLayout *mainLayout;
+	QWidget* gameWidget;
+	QWidget* statusWidget;
+	QGridLayout *gameLayout;
+	QHBoxLayout *statusLayout;
 	QMediaPlayer *mediaPlayer;
 	QTimer *timer;
 	QElapsedTimer elapsedTimer;
 	QLabel *timeLabel;
-	QPushButton* pauseButton;
+	QPushButton *pauseButton;
 	QTime startTime;
 	QVector<QVector<QPushButton *>> buttons;
 	QVector<QVector<bool>> isButtonEliminated;
@@ -41,15 +45,17 @@ private:
 	bool isPaused;
 	static qint64 pausedTime;
 private:
-	_NODISCARD CONNECT_INLINE QPushButton *&getButtonAt(const Point & point) noexcept(noexcept(buttons[point.y][point.x]));
+	_NODISCARD CONNECT_INLINE QPushButton *&
+	getButtonAt(const Point &point) noexcept(noexcept(buttons[point.y][point.x]));
 
-	_NODISCARD CONNECT_INLINE bool &getEliminatedButtonAt(const Point & point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
+	_NODISCARD CONNECT_INLINE bool &
+	getEliminatedButtonAt(const Point &point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
 
 	_NODISCARD CONNECT_MAYBE_UNUSED CONNECT_INLINE bool getEliminatedButtonAt(const Point &) const noexcept;
 
 	void onButtonPressed(Point);
 
-	void initializeGrid();
+	void initializeImageGrid();
 
 	_NODISCARD bool isSame(Point &) noexcept;
 
