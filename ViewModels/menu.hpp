@@ -19,7 +19,7 @@ public:
 
 	~Menu() override;
 signals:
-	void OnStartButtonClicked();
+	void onStartButtonClicked();
 private:
 	Ui::Menu *ui;
 	static void debug();

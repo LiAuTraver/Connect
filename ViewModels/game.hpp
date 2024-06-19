@@ -6,6 +6,8 @@
 #include "pch/qt.multimedia.hh"
 #include "Services/Blocks.hpp"
 #include "Models/Point.hpp"
+#include "statuswidget.hpp"
+#include "gamewidget.hpp"
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -27,58 +29,29 @@ public:
 private:
 	Ui::Game *ui;
 	QVBoxLayout *mainLayout;
-	QWidget* gameWidget;
-	QWidget* statusWidget;
-	QGridLayout *gameLayout;
-	QHBoxLayout *statusLayout;
-	QMediaPlayer *mediaPlayer;
-	QTimer *timer;
-	QElapsedTimer elapsedTimer;
-	QLabel *timeLabel;
-	QPushButton *pauseButton;
-	QTime startTime;
-	QVector<QVector<QPushButton *>> buttons;
-	QVector<QVector<bool>> isButtonEliminated;
-//	QSoundEffect *soundEffect;
-	Point previousButton{-1, -1};
-	Blocks blocks;
+	Connect::GameWidget *gameWidget;
+	Connect::StatusWidget *statusWidget;
 	bool isPaused;
-	static qint64 pausedTime;
+
 private:
-	_NODISCARD CONNECT_INLINE QPushButton *&
-	getButtonAt(const Point &point) noexcept(noexcept(buttons[point.y][point.x]));
 
-	_NODISCARD CONNECT_INLINE bool &
-	getEliminatedButtonAt(const Point &point) noexcept(noexcept(isButtonEliminated[point.y][point.x]));
+	CONNECT_FORCE_INLINE Game &OnInitialize();
 
-	_NODISCARD CONNECT_MAYBE_UNUSED CONNECT_INLINE bool getEliminatedButtonAt(const Point &) const noexcept;
+	Game &win();
 
-	void onButtonPressed(Point);
+	Game &initializeLayout();
 
-	void initializeImageGrid();
+	Game &initializeConnections();
 
-	_NODISCARD bool isSame(Point &) noexcept;
+private receiver:
 
-	static void onButtonEliminate(QPushButton *button);
-
-	void initializeSoundEffect();
-
-	void initializeImages();
-
-	void initializeTime();
-
-	CONNECT_FORCE_INLINE void OnInitialize();
-
-	void updateElapsedTime();
-
-	void checkGameCondition();
-
-	void win();
-
-	void initializeLayout();
-
-	_NODISCARD bool isAllButtonEliminated() const;
+	_NODISCARD bool checkGameCondition();
 
 	void togglePauseResume();
+
+private slots:
+
+	void onNavigatedFrom();
+
 };
 CONNECT_NAMESPACE_END

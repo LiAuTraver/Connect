@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	this->ui->setupUi(this);
 	this->setCentralWidget(menu);
-	QWidget::connect(menu, &Connect::Menu::OnStartButtonClicked, this, &Connect::MainWindow::onGameStart);
+	QWidget::connect(menu, &Connect::Menu::onStartButtonClicked, this, &Connect::MainWindow::handleGameStart);
 	QWidget::connect(this->ui->action_Quit, &QAction::triggered, qApp, &QApplication::quit);
 }
 
@@ -17,7 +17,7 @@ MainWindow::~MainWindow() {
 	// no need to delete custom widgets: they are deleted by their parent(parent-child relationship)
 }
 
-void MainWindow::onGameStart() {
+void MainWindow::handleGameStart() {
 	if (not game) {
 		this->game = new Connect::Game(this);
 	}
@@ -25,7 +25,7 @@ void MainWindow::onGameStart() {
 	Connect::MainWindow::destroyChildWidget(menu); // destroy for now
 }
 
-void MainWindow::onGameExit() {
+void MainWindow::handleGameExit() {
 	if (not menu) {
 		this->menu = new Connect::Menu(this);
 	}
@@ -38,5 +38,16 @@ void MainWindow::destroyChildWidget(QWidget *childWidget) {
 	childWidget = nullptr;
 }
 
+Connect::StatusWidget& Connect::StatusWidget::onButtonEliminate(QPushButton *button) {
+	auto buttonOpacityEffect = new QGraphicsOpacityEffect(button);
+	button->setGraphicsEffect(buttonOpacityEffect);
+	auto animation = new QPropertyAnimation(buttonOpacityEffect, "opacity");
+	animation->setDuration(1000);
+	animation->setStartValue(1);
+	animation->setEndValue(0);
+	QWidget::connect(animation, &QPropertyAnimation::finished, button, &QPushButton::hide);
+	animation->start(QAbstractAnimation::DeleteWhenStopped);
+	return *this;
+}
 
 CONNECT_NAMESPACE_END

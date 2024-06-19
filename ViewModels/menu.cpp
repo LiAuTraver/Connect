@@ -7,7 +7,7 @@ Menu::Menu(QWidget *parent) :
 	ui->setupUi(this);
 	connect(ui->pushButtonExit,&QPushButton::clicked ,qApp,&QApplication::quit);
 	connect(ui->pushButtonAbout,&QPushButton::clicked,this,&Menu::debug);
-	connect(ui->pushButtonStart,&QPushButton::clicked,this,&Menu::OnStartButtonClicked);
+	connect(ui->pushButtonStart,&QPushButton::clicked,this, &Menu::onStartButtonClicked);
 }
 
 Menu::~Menu() {

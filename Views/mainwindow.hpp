@@ -29,8 +29,8 @@ private:
 	Connect::Game *game;
 private slots:
 
-	void onGameStart();
+	void handleGameStart();
 
-	void onGameExit();
+	void handleGameExit();
 };
 CONNECT_NAMESPACE_END

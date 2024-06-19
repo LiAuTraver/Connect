@@ -54,6 +54,18 @@
 #define CONNECT_IMAGES_FOLDER ":/images/"
 #define CONNECT_IMAGE_PATH(image) CONNECT_IMAGES_FOLDER image
 
+#ifndef receiver
+#define receiver
+#else
+#error
+#endif
+
+#ifndef sender
+#define sender
+#else
+#error
+#endif
+
 #define CONNECT_CONSTEXPR constexpr
 
 #define CONNECT_NAMESPACE_BEGIN namespace Connect{

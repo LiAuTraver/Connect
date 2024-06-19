@@ -66,12 +66,14 @@ add_custom_target(generate_qrc ALL DEPENDS ${QRC_FILE_PATH})
 find_package(fmt CONFIG REQUIRED)
 find_package(absl CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(magic_enum CONFIG REQUIRED)
 set(TARGET_LINK_PACKAGES
         fmt::fmt
         absl::base
         absl::log
         absl::any
         nlohmann_json::nlohmann_json
+        magic_enum::magic_enum
 )
 
 set(PCH ${CMAKE_SOURCE_DIR}/pch)
@@ -96,33 +98,43 @@ endfunction()
 #message(STATUS "QT_UI_FILE: ${QT_UI_FILE}")
 
 set(SOURCE_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Contracts/IFileService.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/NotImplementedException.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/Parser.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Block.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Point.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.cpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+        Contracts/IFileService.cpp
+        Helpers/NotImplementedException.cpp
+        Helpers/Parser.cpp
+        Models/Block.cpp
+        Models/Point.cpp
+        Services/Blocks.cpp
+        ViewModels/game.cpp
+        ViewModels/menu.cpp
+        Views/mainwindow.cpp
+        ViewModels/gamewidget.cpp
+        ViewModels/statuswidget.cpp
+        Helpers/Animation.cpp
+        Helpers/Sound.cpp
 )
 set(UI_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.ui;
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.ui;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.ui
+        ViewModels/game.ui
+        ViewModels/menu.ui
+        Views/mainwindow.ui
+        ViewModels/gamewidget.ui
+        ViewModels/statuswidget.ui
 )
 set(HEADER_FILE
-        ${CMAKE_CURRENT_SOURCE_DIR}/Contracts/IFileService.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/NotImplementedException.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/Parser.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Block.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Point.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/game.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/menu.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.hpp;
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/config.hpp
+        Contracts/IFileService.hpp
+        Helpers/NotImplementedException.hpp
+        Helpers/Parser.hpp
+        Models/Block.hpp
+        Models/Point.hpp
+        Services/Blocks.hpp
+        ViewModels/game.hpp
+        ViewModels/menu.hpp
+        include/config.hpp
+        Views/mainwindow.hpp
+        ViewModels/gamewidget.hpp
+        ViewModels/statuswidget.hpp
+        Helpers/Animation.hpp
+        Helpers/Actions.hpp
+        Helpers/Sound.hpp
 )
 
 

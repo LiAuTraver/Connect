@@ -1,5 +1,8 @@
 add_executable(test
         Test/test.cpp
+        ${HEADER_FILE}
+        ${SOURCE_FILE}
+        ${QT_UI_FILE}
 )
 
 target_link_libraries(test PRIVATE
