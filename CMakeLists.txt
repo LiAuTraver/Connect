@@ -111,6 +111,7 @@ set(SOURCE_FILE
         ViewModels/statuswidget.cpp
         Helpers/Animation.cpp
         Helpers/Sound.cpp
+        Models/BlockButton.cpp
 )
 set(UI_FILE
         ViewModels/game.ui
@@ -135,6 +136,7 @@ set(HEADER_FILE
         Helpers/Animation.hpp
         Helpers/Actions.hpp
         Helpers/Sound.hpp
+        Models/BlockButton.hpp
 )
 
 

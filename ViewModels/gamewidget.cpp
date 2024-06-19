@@ -6,7 +6,7 @@
 
 Connect::GameWidget::GameWidget(QWidget *parent) :
 		QWidget(parent), ui(new Ui::GameWidget),
-		buttons(QVector<QVector<QPushButton *>>{}),
+		buttons(QVector<QVector<BlockButton *>>{}),
 		gameLayout(new QGridLayout(nullptr)),
 		previousButton(-1, -1) {
 	this->
@@ -62,7 +62,7 @@ _NODISCARD bool Connect::GameWidget::isSame(Point &point) noexcept {
 }
 
 
-QPushButton *&Connect::GameWidget::getButtonAt(
+Connect::BlockButton*& Connect::GameWidget::getButtonAt(
 		const Connect::Point &point) noexcept(noexcept(buttons[point.y][point.x])) {
 	return buttons[point.y][point.x];
 }
@@ -81,7 +81,7 @@ Connect::GameWidget &Connect::GameWidget::initializeLayout() {
 	for (auto row = 0LL; row < blocks.getRows(); row++) {
 		for (auto col = 0LL; col < blocks.getCols(); col++) {
 			auto point = Point(row, col);
-			getButtonAt(point) = new QPushButton(QIcon(QString{blocks(point).data()}), "", this);
+			getButtonAt(point) = new BlockButton(QIcon(QString{blocks(point).data()}), "", this);
 			gameLayout->addWidget(getButtonAt(point), static_cast<int>(row), static_cast<int>(col));
 			// CANNOT capture `row` and `col` by reference; the lambda expression might be executed AFTER the loop because it's a connection
 			// Asynchronous signal-slot mechanism problem, also `onButtonPressed` cannot ref row and col.

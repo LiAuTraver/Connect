@@ -6,6 +6,7 @@
 #include <Services/Blocks.hpp>
 #include <magic_enum.hpp>
 #include <Helpers/Actions.hpp>
+#include <Models/BlockButton.hpp>
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -14,7 +15,7 @@ QT_END_NAMESPACE
 CONNECT_NAMESPACE_END
 
 CONNECT_NAMESPACE_BEGIN
-class GameWidget : public QWidget {
+class GameWidget extends public QWidget {
 Q_OBJECT
 
 public:
@@ -33,7 +34,7 @@ public:
 private:
 	Ui::GameWidget *ui;
 	QGridLayout *gameLayout;
-	QVector<QVector<QPushButton *>> buttons;
+	QVector<QVector<BlockButton *>> buttons;
 	QVector<QVector<bool>> isButtonEliminated;
 	Point previousButton{-1, -1};
 	Blocks blocks;
@@ -49,7 +50,7 @@ private:
 
 	GameWidget &initializeLayout();
 
-	_NODISCARD CONNECT_INLINE QPushButton *&
+	_NODISCARD CONNECT_INLINE BlockButton*&
 	getButtonAt(const Point &point) noexcept(noexcept(buttons[point.y][point.x]));
 
 	_NODISCARD CONNECT_INLINE bool &

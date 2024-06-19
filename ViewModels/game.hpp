@@ -16,7 +16,7 @@ QT_END_NAMESPACE
 CONNECT_NAMESPACE_END
 
 CONNECT_NAMESPACE_BEGIN
-class Game : public QWidget {
+class Game extends public QWidget {
 Q_OBJECT
 
 public:
