@@ -29,7 +29,7 @@ Connect::Blocks &Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::B
 		qDebug() << "Path is empty";
 		return *this;
 	}
-	return this->initializeImagePaths();
+	return this->Oninitialize();
 }
 
 _NODISCARD Connect::Blocks::size_type Connect::Blocks::getTotal() noexcept {
@@ -55,8 +55,7 @@ Connect::Blocks &Connect::Blocks::initializeImagePaths() {
 	imageSource.clear();
 	if (this->path.empty() or not std::filesystem::exists(this->path)) {
 		qDebug() << "invalid path: " << path.string();
-//		throw std::invalid_argument("Path not exists");
-		path = IMAGE_PATH;
+		throw std::invalid_argument("Path not exists");
 	}
 	// recursively search for all files in the directory using std::filesystem
 	for (const auto &entry: std::filesystem::recursive_directory_iterator(path))
@@ -85,6 +84,7 @@ Connect::Blocks &Connect::Blocks::initializeImageGrid() {
 }
 
 Connect::Blocks &Connect::Blocks::Oninitialize() {
+
 	return (*this)
 			.initializeImagePaths()
 			.initializeImageGrid();

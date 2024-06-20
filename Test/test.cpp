@@ -1,24 +1,67 @@
-#include <pch/qt.core.hh>
-#include <ViewModels/gamewidget.hpp>
+#include <QApplication>
+#include <QMainWindow>
+#include <QFileDialog>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QLabel>
 
+class MainWindow : public QMainWindow {
+Q_OBJECT
+
+public:
+	explicit MainWindow(QWidget *parent = nullptr) : QMainWindow(parent) {
+		auto *button = new QPushButton("Open File", this);
+		auto *label = new QLabel("No file selected", this);
+
+		connect(button, &QPushButton::clicked, this, [this, label]() {
+			QString fileName = QFileDialog::getOpenFileName(this, "Open File", "", "All Files (*.*);;Text Files (*.txt);;Images (*.png *.jpg)");
+
+			if (!fileName.isEmpty()) {
+				label->setText("Selected file: " + fileName);
+			}
+		});
+
+		auto *layout = new QVBoxLayout;
+		layout->addWidget(button);
+		layout->addWidget(label);
+
+		auto *widget = new QWidget(this);
+		widget->setLayout(layout);
+		setCentralWidget(widget);
+	}
+};
 
 int main(int argc, char *argv[]) {
 	QApplication app(argc, argv);
 
-	QMainWindow mainWindow;
-	Connect::GameWidget *gameWidget = new Connect::GameWidget;
-
-	mainWindow.setCentralWidget(gameWidget);
-	mainWindow.resize(800, 600);
+	MainWindow mainWindow;
+	mainWindow.resize(400, 300);
 	mainWindow.show();
 
-	return app.exec();
+	return QApplication::exec();
 }
 
+#include "test.moc"
 
 
 
-
+//#include <pch/qt.core.hh>
+//#include <ViewModels/blockswidget.hpp>
+//
+//
+//int main(int argc, char *argv[]) {
+//	QApplication app(argc, argv);
+//
+//	QMainWindow mainWindow;
+//	Connect::BlocksWidget *gameWidget = new Connect::BlocksWidget;
+//
+//	mainWindow.setCentralWidget(gameWidget);
+//	mainWindow.resize(800, 600);
+//	mainWindow.show();
+//
+//	return app.exec();
+//}
+//
 //
 //class MainWindow : public QWidget {
 //public:

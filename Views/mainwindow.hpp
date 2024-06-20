@@ -13,7 +13,9 @@ QT_END_NAMESPACE
 
 CONNECT_NAMESPACE_BEGIN
 class MainWindow : public QMainWindow {
-Q_OBJECT
+Q_OBJECT 	//! if we define the class at a .cpp file, that is,
+			//! the macro `Q_OBJECT`appears at a cpp source file,
+			//! then we shall include "{cpp name}.moc" meta file.
 
 public:
 	explicit MainWindow(QWidget *parent = nullptr);

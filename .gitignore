@@ -369,3 +369,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 cmake-vscode-build/
+out/

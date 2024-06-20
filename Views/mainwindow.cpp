@@ -1,10 +1,12 @@
 #include "mainwindow.hpp"
+
+//! if use Qt ui file (in Qt Designer) then we shall include this `ui_{class name}.h`
 #include "ui_MainWindow.h"
 
 CONNECT_NAMESPACE_BEGIN
 MainWindow::MainWindow(QWidget *parent) :
 		QMainWindow(parent), ui(new Connect::Ui::MainWindow), menu(new Connect::Menu(this)),
-		game(nullptr) // Initialize game to nullptr, create it only when needed
+		game(nullptr) //! Initialize game to nullptr, create it only when needed
 {
 	this->ui->setupUi(this);
 	this->setCentralWidget(menu);
@@ -13,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-	delete ui; // (?)
-	// no need to delete custom widgets: they are deleted by their parent(parent-child relationship)
+	//! no need to delete custom widgets: they are deleted by their parent (parent-child relationship)
+	delete ui; //! needed, see note in `game.cpp`
 }
 
 void MainWindow::handleGameStart() {

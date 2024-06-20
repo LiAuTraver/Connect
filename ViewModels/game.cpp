@@ -1,29 +1,27 @@
 #include <ViewModels/game.hpp>
 #include <Services/Blocks.hpp>
-#include <Helpers/NotImplementedException.hpp>
 #include "ui_Game.h"
 
 Connect::Game::Game(QWidget *parent) :
 		QWidget(parent),
 		ui(new Ui::Game),
 		mainLayout(new QVBoxLayout(this)),
-		gameWidget(new GameWidget(this)),
+		blocksWidget(new BlocksWidget(this)),
 		statusWidget(new StatusWidget(this)),
 		isPaused(false) {
-	this->OnInitialize();
-	this->statusWidget->Oninitialize();
-	this->gameWidget->Oninitialize();
-	this->ui->setupUi(this);
+	this->OnInitialize().ui->setupUi(this);
 }
 
 Connect::Game::~Game() {
+	// note: ui (a.k.a class Connect::Game::Ui) is not a QObject and needs to be manually deleted.
 	delete ui;
+	// note: other members, e.g., QPushButton, do not need to be manually deleted since they are QObject and the parent is the current class.
 }
 
 Connect::Game &Connect::Game::initializeLayout() {
-	this->gameWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	this->blocksWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->mainLayout->addWidget(this->statusWidget);
-	this->mainLayout->addWidget(this->gameWidget);
+	this->mainLayout->addWidget(this->blocksWidget);
 	this->setLayout(mainLayout);
 	return *this;
 }
@@ -43,26 +41,19 @@ Connect::Game &Connect::Game::win() {
 	return *this;
 }
 
-_NODISCARD bool Connect::Game::checkGameCondition() {
-
-	if (not gameWidget->isAllButtonEliminated())
-		return false;
-	return true;
-}
-
 void Connect::Game::togglePauseResume() {
 	if (isPaused) {
 		statusWidget->onPauseButtonToggled("Resume");
-		gameWidget->onPauseButtonToggled("Show");
+		blocksWidget->onPauseButtonToggled("Show");
 	} else {
 		statusWidget->onPauseButtonToggled("Pause");
-		gameWidget->onPauseButtonToggled("Hide");
+		blocksWidget->onPauseButtonToggled("Hide");
 	}
 	isPaused = !isPaused;
 }
 
 void Connect::Game::onNavigatedFrom() {
-	if (this->checkGameCondition())
+	if (blocksWidget->isAllButtonEliminated())
 		this->win();
 }
 
@@ -70,7 +61,7 @@ Connect::Game &Connect::Game::initializeConnections() {
 	// must be clicked not toggled???
 	// what's even confusing is that previously `this->pauseButton` I shall use `QPushButton::toggled`
 	QWidget::connect(this->statusWidget->pauseButton, &QPushButton::clicked, this, &Connect::Game::togglePauseResume);
-	QWidget::connect(this->gameWidget, &Connect::GameWidget::forward, this, &Connect::Game::checkGameCondition);
+	QWidget::connect(this->blocksWidget, &Connect::BlocksWidget::navigateToSuper, this, &Connect::Game::onNavigatedFrom);
 	return *this;
 }
 

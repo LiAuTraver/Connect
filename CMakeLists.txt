@@ -30,7 +30,7 @@ elseif (UNIX)
     message(STATUS "Linux, using g++.")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 endif ()
-list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
+#list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
 message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
 
@@ -98,31 +98,24 @@ endfunction()
 #message(STATUS "QT_UI_FILE: ${QT_UI_FILE}")
 
 set(SOURCE_FILE
-        Contracts/IFileService.cpp
-        Helpers/NotImplementedException.cpp
-        Helpers/Parser.cpp
         Models/Block.cpp
-        Models/Point.cpp
         Services/Blocks.cpp
         ViewModels/game.cpp
         ViewModels/menu.cpp
         Views/mainwindow.cpp
-        ViewModels/gamewidget.cpp
+        ViewModels/blockswidget.cpp
         ViewModels/statuswidget.cpp
-        Helpers/Animation.cpp
-        Helpers/Sound.cpp
-        Models/BlockButton.cpp
+        ViewModels/leaderboardwidget.cpp
 )
 set(UI_FILE
         ViewModels/game.ui
         ViewModels/menu.ui
         Views/mainwindow.ui
-        ViewModels/gamewidget.ui
+        ViewModels/blockswidget.ui
         ViewModels/statuswidget.ui
+        ViewModels/leaderboardwidget.ui
 )
 set(HEADER_FILE
-        Contracts/IFileService.hpp
-        Helpers/NotImplementedException.hpp
         Helpers/Parser.hpp
         Models/Block.hpp
         Models/Point.hpp
@@ -131,12 +124,16 @@ set(HEADER_FILE
         ViewModels/menu.hpp
         include/config.hpp
         Views/mainwindow.hpp
-        ViewModels/gamewidget.hpp
+        ViewModels/blockswidget.hpp
         ViewModels/statuswidget.hpp
         Helpers/Animation.hpp
         Helpers/Actions.hpp
         Helpers/Sound.hpp
         Models/BlockButton.hpp
+        ViewModels/leaderboardwidget.hpp
+        Models/Record.hpp
+        Services/Records.hpp
+        Helpers/RankComparator.hpp
 )
 
 

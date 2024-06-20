@@ -7,7 +7,7 @@
 #include "Services/Blocks.hpp"
 #include "Models/Point.hpp"
 #include "statuswidget.hpp"
-#include "gamewidget.hpp"
+#include "blockswidget.hpp"
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -29,7 +29,7 @@ public:
 private:
 	Ui::Game *ui;
 	QVBoxLayout *mainLayout;
-	Connect::GameWidget *gameWidget;
+	Connect::BlocksWidget *blocksWidget;
 	Connect::StatusWidget *statusWidget;
 	bool isPaused;
 
@@ -44,8 +44,6 @@ private:
 	Game &initializeConnections();
 
 private receiver:
-
-	_NODISCARD bool checkGameCondition();
 
 	void togglePauseResume();
 

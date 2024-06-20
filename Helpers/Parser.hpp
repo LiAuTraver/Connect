@@ -1,7 +1,7 @@
 #pragma once
 #include "include/config.hpp"
 #include "pch/qt.xml.hh"
-
+#include <chrono>
 CONNECT_NAMESPACE_BEGIN
 class Parser {
 public:

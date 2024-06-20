@@ -10,11 +10,7 @@
 │   ├── Connect.exe
 │   ├── Connect.ilk
 │   ├── Connect.pdb
-│   ├── fmtd.dll
-│   ├── test_autogen
-│   ├── test.exe
-│   ├── test.ilk
-│   └── test.pdb
+│   └── fmtd.dll
 ├── CMakeLists_old.txt
 ├── CMakeLists.txt
 ├── CMakeLists.txt.user
@@ -26,27 +22,25 @@
 │   ├── compile_commands.json
 │   └── Testing
 ├── Contracts
-│   └── IFileService.cpp
+│   ├── IFileService.cpp
+│   └── IFileService.hpp
 ├── Helpers
+│   ├── Actions.hpp
+│   ├── Animation.hpp
 │   ├── generate_qrc.py
 │   ├── NotImplementedException.cpp
-│   ├── Parser.cpp
-│   └── __pycache__
-├── include
-│   ├── Block.hpp
-│   ├── Blocks.hpp
-│   ├── config.hpp
-│   ├── game.hpp
-│   ├── IFileService.hpp
-│   ├── mainwindow.hpp
-│   ├── menu.hpp
 │   ├── NotImplementedException.hpp
 │   ├── Parser.hpp
-│   └── Point.hpp
+│   ├── __pycache__
+│   └── Sound.hpp
+├── include
+│   └── config.hpp
 ├── main.cpp
 ├── Models
+│   ├── BlockButton.hpp
 │   ├── Block.cpp
-│   └── Point.cpp
+│   ├── Block.hpp
+│   └── Point.hpp
 ├── pch
 │   ├── absl.log.hh
 │   ├── fmt.hh
@@ -66,11 +60,14 @@
 │   └── std.utils.hh
 ├── Resources
 │   ├── audios
-│   └── images
+│   ├── hard
+│   ├── images
+│   └── images3
 ├── resources.qrc
 ├── resources.qrc.bak
 ├── Services
-│   └── Blocks.cpp
+│   ├── Blocks.cpp
+│   └── Blocks.hpp
 ├── structure.txt
 ├── Test
 │   └── test.cpp
@@ -81,11 +78,20 @@
 │   └── Scripts
 ├── ViewModels
 │   ├── game.cpp
+│   ├── game.hpp
 │   ├── game.ui
+│   ├── gamewidget.cpp
+│   ├── gamewidget.hpp
+│   ├── gamewidget.ui
 │   ├── menu.cpp
-│   └── menu.ui
+│   ├── menu.hpp
+│   ├── menu.ui
+│   ├── statuswidget.cpp
+│   ├── statuswidget.hpp
+│   └── statuswidget.ui
 └── Views
     ├── mainwindow.cpp
+    ├── mainwindow.hpp
     └── mainwindow.ui
 
-24 directories, 65 files
+25 directories, 70 files
