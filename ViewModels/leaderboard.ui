@@ -3,8 +3,8 @@
     <author/>
     <comment/>
     <exportmacro/>
-    <class>Connect::LeaderboardWidget</class>
-    <widget class="QWidget" name="Connect::LeaderboardWidget">
+    <class>Connect::Leaderboard</class>
+    <widget class="QWidget" name="Connect::Leaderboard">
         <property name="geometry">
             <rect>
                 <x>0</x>
@@ -14,7 +14,7 @@
             </rect>
         </property>
         <property name="windowTitle">
-            <string>LeaderboardWidget</string>
+            <string>Leaderboard</string>
         </property>
     </widget>
     <pixmapfunction/>

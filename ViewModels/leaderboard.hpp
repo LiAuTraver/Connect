@@ -5,21 +5,21 @@
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
-namespace Ui { class LeaderboardWidget; }
+namespace Ui { class Leaderboard; }
 QT_END_NAMESPACE
 CONNECT_NAMESPACE_END
 
 CONNECT_NAMESPACE_BEGIN
-class LeaderboardWidget : public QWidget {
+class Leaderboard : public QWidget {
 Q_OBJECT
 
 public:
-	explicit LeaderboardWidget(QWidget *parent = nullptr);
+	explicit Leaderboard(QWidget *parent = nullptr);
 
-	~LeaderboardWidget() override;
+	~Leaderboard() override;
 
 private:
-	Ui::LeaderboardWidget *ui;
+	Ui::Leaderboard *ui;
 	QHBoxLayout* leaderboardLayout;
 };
 CONNECT_NAMESPACE_END

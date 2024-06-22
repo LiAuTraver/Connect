@@ -105,7 +105,7 @@ set(SOURCE_FILE
         Views/mainwindow.cpp
         ViewModels/blockswidget.cpp
         ViewModels/statuswidget.cpp
-        ViewModels/leaderboardwidget.cpp
+        ViewModels/leaderboard.cpp
 )
 set(UI_FILE
         ViewModels/game.ui
@@ -113,7 +113,7 @@ set(UI_FILE
         Views/mainwindow.ui
         ViewModels/blockswidget.ui
         ViewModels/statuswidget.ui
-        ViewModels/leaderboardwidget.ui
+        ViewModels/leaderboard.ui
 )
 set(HEADER_FILE
         Helpers/Parser.hpp
@@ -130,10 +130,11 @@ set(HEADER_FILE
         Helpers/Actions.hpp
         Helpers/Sound.hpp
         Models/BlockButton.hpp
-        ViewModels/leaderboardwidget.hpp
+        ViewModels/leaderboard.hpp
         Models/Record.hpp
         Services/Records.hpp
-        Helpers/RankComparator.hpp
+        Helpers/RecordComparator.hpp
+        Helpers/RecordHash.hpp
 )
 
 
