@@ -4,17 +4,17 @@
 #include "ui_StatusWidget.h"
 #include <Helpers/Actions.hpp>
 
-// dunno why but must put it here otherwise linking error
+// fixme: dunno why but must put it here otherwise linking error
 qint64 Connect::StatusWidget::pausedTime = 0;
 
 Connect::StatusWidget::StatusWidget(QWidget *parent) :
 		QWidget(parent),
+		pauseButton(new QPushButton(this)),
+		timer(new QTimer(this)),
 		ui(new Ui::StatusWidget),
 		statusLayout(new QHBoxLayout(this)),
 		elapsedTimer(),
-		timer(new QTimer(this)),
 		timeLabel(new QLabel(this)),
-		pauseButton(new QPushButton(this)),
 		startTime() {
 	this->Oninitialize();
 	this->ui->setupUi(this);
@@ -51,7 +51,7 @@ Connect::StatusWidget &Connect::StatusWidget::win() {
 }
 
 
-void Connect::StatusWidget::updateElapsedTime() {
+void Connect::StatusWidget::updateElapsedTime() const {
 	qint64 elapsedMilliseconds = elapsedTimer.elapsed() + pausedTime;
 	timeLabel->setText(QString("Elapsed time: %1:%2.%3")
 			                   .arg(elapsedMilliseconds / 60000, 2, 10, QChar('0'))

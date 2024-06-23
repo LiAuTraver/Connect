@@ -41,6 +41,9 @@ find_package(Qt6
         Widgets
         Multimedia
         Xml
+        Qml
+        Quick
+        QuickWidgets
         REQUIRED
 )
 
@@ -106,6 +109,7 @@ set(SOURCE_FILE
         ViewModels/blockswidget.cpp
         ViewModels/statuswidget.cpp
         ViewModels/leaderboard.cpp
+        ViewModels/about.cpp
 )
 set(UI_FILE
         ViewModels/game.ui
@@ -114,6 +118,7 @@ set(UI_FILE
         ViewModels/blockswidget.ui
         ViewModels/statuswidget.ui
         ViewModels/leaderboard.ui
+        ViewModels/about.ui
 )
 set(HEADER_FILE
         Helpers/Parser.hpp
@@ -135,6 +140,7 @@ set(HEADER_FILE
         Services/Records.hpp
         Helpers/RecordComparator.hpp
         Helpers/RecordHash.hpp
+        ViewModels/about.hpp
 )
 
 
@@ -152,6 +158,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
         Qt::Widgets
         Qt::Multimedia
         Qt::Xml
+        Qt::Qml
+        Qt::Quick
         ${TARGET_LINK_PACKAGES}
 )
 target_include_directories(${PROJECT_NAME} PUBLIC

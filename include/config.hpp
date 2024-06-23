@@ -54,14 +54,20 @@
 #define CONNECT_IMAGES_FOLDER ":/images/"
 #define CONNECT_IMAGE_PATH(image) CONNECT_IMAGES_FOLDER image
 
-#ifndef receiver
-#define receiver
+#ifndef receivers
+#define receivers
 #else
 #error
 #endif
 
-#ifndef sender
-#define sender
+#ifndef senders
+#define senders
+#else
+#error
+#endif
+
+#ifndef is
+#define is ==
 #else
 #error
 #endif

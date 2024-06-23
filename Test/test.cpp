@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
 	Connect::Records records;
 	records.OnInitialize();
 	records.printRecords();// success!
+	fmt::println("{}",records.saveData());
 }
 
 #include "test.moc"

@@ -31,12 +31,12 @@ public:
 
 	StatusWidget &onPauseButtonToggled(std::string_view enumName);
 
-public receiver:
+public receivers:
 
 // note: Qt connect-related function must return nothing(void) or return a static type or something(todo).
-	void updateElapsedTime();
+	void updateElapsedTime() const;
 
-public sender:
+public senders:
 	QPushButton *pauseButton;
 	QTimer *timer;
 private:

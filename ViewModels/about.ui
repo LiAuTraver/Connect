@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Connect::Menu</class>
- <widget class="QWidget" name="Connect::Menu">
+ <class>Connect::About</class>
+ <widget class="QWidget" name="Connect::About">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>340</width>
-    <height>233</height>
+    <width>368</width>
+    <height>328</height>
    </rect>
   </property>
-  <property name="acceptDrops">
-   <bool>false</bool>
-  </property>
   <property name="windowTitle">
-   <string>Connect Game</string>
+   <string>About</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutTitle">
+    <layout class="QHBoxLayout" name="titleLayout">
      <item>
-      <spacer name="horizontalSpacerTitleLeft">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -33,7 +30,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="Title">
+      <widget class="QLabel" name="titileLabel">
        <property name="font">
         <font>
          <pointsize>26</pointsize>
@@ -41,86 +38,12 @@
         </font>
        </property>
        <property name="text">
-        <string>Connect</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacerTitleRight">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutStart">
-     <item>
-      <spacer name="horizontalSpacerStartLeft">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonStart">
-       <property name="text">
-        <string>Start</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacerStartRight">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutAbout">
-     <item>
-      <spacer name="horizontalSpacerAboutLeft">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButtonAbout">
-       <property name="text">
         <string>About</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacerAboutRight">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -135,9 +58,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutRecord">
+    <layout class="QHBoxLayout" name="des1Layout">
      <item>
-      <spacer name="horizontalSpacerExitRecordLeft">
+      <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -150,14 +73,24 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonRecord">
+      <widget class="QLabel" name="description1">
+       <property name="font">
+        <font>
+         <family>Segoe Print</family>
+         <pointsize>22</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="text">
-        <string>Record</string>
+        <string>Connect Game </string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacerExitRecordRight">
+      <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -172,9 +105,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="des2Layout">
      <item>
-      <spacer name="horizontalSpacerExitLeft">
+      <spacer name="horizontalSpacer_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -187,14 +120,74 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButtonExit">
+      <widget class="QLabel" name="description2">
        <property name="text">
-        <string>Exit</string>
+        <string>HDU 2024 Programming Course Project</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacerExitRight">
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item>
+      <spacer name="horizontalSpacer_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="myLink">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/liautraver&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#00cc6a;&quot;&gt;About author...&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_7">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Close</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_9">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

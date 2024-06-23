@@ -20,6 +20,8 @@ public:
 	~Menu() override;
 signals:
 	void onStartButtonClicked();
+	void onRecordButtonClicked();
+	void onAboutButtonClicked();
 private:
 	Ui::Menu *ui;
 	static void debug();

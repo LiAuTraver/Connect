@@ -43,7 +43,7 @@ private:
 
 	Game &initializeConnections();
 
-private receiver:
+private receivers:
 
 	void togglePauseResume();
 

@@ -11,6 +11,9 @@ target_link_libraries(test PRIVATE
         Qt::Widgets
         Qt::Multimedia
         Qt::Xml
+        Qt::Quick
+        Qt::Qml
+        Qt::QuickWidgets
         ${TARGET_LINK_PACKAGES}
 )
 
