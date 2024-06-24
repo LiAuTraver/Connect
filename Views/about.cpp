@@ -1,4 +1,4 @@
-#include "about.hpp"
+#include <Views/about.hpp>
 #include <pch/qt.core.hh>
 #include <pch/qt.widgets.hh>
 #include "ui_About.h"

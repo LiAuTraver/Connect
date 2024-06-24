@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ViewModels/about.hpp"
-#include "ViewModels/game.hpp"
-#include "ViewModels/leaderboard.hpp"
-#include "ViewModels/menu.hpp"
-#include "include/config.hpp"
-#include "pch/qt.widgets.hh"
+#include <Views/about.hpp>
+#include <Views/game.hpp>
+#include <Views/leaderboard.hpp>
+#include <Views/menu.hpp>
+#include <include/config.hpp>
+#include <pch/qt.widgets.hh>
 
 QT_BEGIN_NAMESPACE
 CONNECT_NAMESPACE_BEGIN
@@ -18,9 +18,9 @@ CONNECT_NAMESPACE_END
 QT_END_NAMESPACE
 
 CONNECT_NAMESPACE_BEGIN
-class MainWindow : public QMainWindow {
+class MainWindow extends public QMainWindow {
 	Q_OBJECT
-	// if we define the class at a .cpp file, that is,
+	//! if we define the class at a .cpp file, that is,
 	//! the macro `Q_OBJECT`appears at a cpp source file,
 	//! then we shall include "{cpp name}.moc" meta file.
 
@@ -54,6 +54,7 @@ private slots:
 
 	void handleAboutExit();
 
+	void handleLeaderboardExit();
 };
 
 CONNECT_NAMESPACE_END

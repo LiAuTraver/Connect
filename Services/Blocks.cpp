@@ -7,17 +7,17 @@ const std::string_view Connect::Blocks::IMAGE_PATH = {R"(M:/Projects/Connect/Res
 
 Connect::Blocks::Blocks() : height(0), width(0), total(0), path("") {}
 
-Connect::Blocks::Blocks(std::string_view path) : path(path) {}
+Connect::Blocks::Blocks(const std::string_view path) : height(0), width(0), total(0), path(path) {}
 
-Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w) {
+Connect::Blocks::Blocks(const size_type h, const size_type w) {
 	reset(h, w);
 }
 
-Connect::Blocks::Blocks(Connect::Blocks::size_type h, Connect::Blocks::size_type w, const std::string_view path) {
+Connect::Blocks::Blocks(const size_type h, const size_type w, const std::string_view path) {
 	reset(h, w, path);
 }
 
-Connect::Blocks &Connect::Blocks::reset(Connect::Blocks::size_type h, Connect::Blocks::size_type w,
+Connect::Blocks &Connect::Blocks::reset(const size_type h, const size_type w,
                                         const std::string_view importPath) {
 	height = h;
 	width = w;
@@ -53,7 +53,7 @@ _NODISCARD Connect::Blocks::size_type Connect::Blocks::getCols() const noexcept 
 
 Connect::Blocks &Connect::Blocks::initializeImagePaths() {
 	imageSource.clear();
-	if (this->path.empty() or not std::filesystem::exists(this->path)) {
+	if (this->path.empty() or not exists(this->path)) {
 		qDebug() << "invalid path: " << path.string();
 		throw std::invalid_argument("Path not exists");
 	}

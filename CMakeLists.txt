@@ -30,10 +30,13 @@ elseif (UNIX)
     message(STATUS "Linux, using g++.")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 endif ()
+
+# if failed, use `"M:/vcpkg/installed/x64-windows/share"`
 #list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
+#include("C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake")
 message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-
+message(STATUS "CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
 find_package(Qt6
         REQUIRED COMPONENTS
         Core
@@ -82,8 +85,8 @@ set(TARGET_LINK_PACKAGES
 set(PCH ${CMAKE_SOURCE_DIR}/pch)
 file(GLOB GLOBAL_PCH_HEADER "${PCH}/*.hh")
 # Define a function to collect and filter files
-function(collect_and_filter_files out_var fileext)
-    file(GLOB_RECURSE files "${CMAKE_CURRENT_SOURCE_DIR}/*.${fileext}")
+function(collect_and_filter_files out_var file_extension)
+    file(GLOB_RECURSE files "${CMAKE_CURRENT_SOURCE_DIR}/*.${file_extension}")
     list(FILTER files EXCLUDE REGEX "/build/")
     list(FILTER files EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
     list(FILTER files EXCLUDE REGEX "/cmake-vscode-build/")
@@ -103,30 +106,31 @@ endfunction()
 set(SOURCE_FILE
         Models/Block.cpp
         Services/Blocks.cpp
-        ViewModels/game.cpp
-        ViewModels/menu.cpp
+        Views/game.cpp
+        Views/menu.cpp
         Views/mainwindow.cpp
         ViewModels/blockswidget.cpp
         ViewModels/statuswidget.cpp
-        ViewModels/leaderboard.cpp
-        ViewModels/about.cpp
+        Views/leaderboard.cpp
+        Views/about.cpp
+        Services/Records.cpp
 )
 set(UI_FILE
-        ViewModels/game.ui
-        ViewModels/menu.ui
+        Views/game.ui
+        Views/menu.ui
         Views/mainwindow.ui
         ViewModels/blockswidget.ui
         ViewModels/statuswidget.ui
-        ViewModels/leaderboard.ui
-        ViewModels/about.ui
+        Views/leaderboard.ui
+        Views/about.ui
 )
 set(HEADER_FILE
-        Helpers/Parser.hpp
+        Helpers/RecordSerializer.hpp
         Models/Block.hpp
         Models/Point.hpp
         Services/Blocks.hpp
-        ViewModels/game.hpp
-        ViewModels/menu.hpp
+        Views/game.hpp
+        Views/menu.hpp
         include/config.hpp
         Views/mainwindow.hpp
         ViewModels/blockswidget.hpp
@@ -135,12 +139,12 @@ set(HEADER_FILE
         Helpers/Actions.hpp
         Helpers/Sound.hpp
         Models/BlockButton.hpp
-        ViewModels/leaderboard.hpp
+        Views/leaderboard.hpp
         Models/Record.hpp
         Services/Records.hpp
         Helpers/RecordComparator.hpp
-        Helpers/RecordHash.hpp
-        ViewModels/about.hpp
+        Views/about.hpp
+        Contracts/ISerializer.hpp
 )
 
 

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "pch/qt.widgets.hh"
-#include "include/config.hpp"
-#include "pch/std.container.hh"
+#include <include/config.hpp>
+#include <pch/qt.widgets.hh>
 
 CONNECT_NAMESPACE_BEGIN
 class Block {

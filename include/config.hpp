@@ -39,7 +39,7 @@
 // for now, fixme
 #define CONNECT_MAYBE_UNUSED [[maybe_unused]]
 #endif
-#if defined(__GNUC__) || defined (__clang__)
+#if defined(__GNUC__) || defined(__clang__)
 #define CONNECT_FORCE_INLINE inline __attribute__((always_inline))
 #elifdef FORCEINLINE
 #define CONNECT_FORCE_INLINE FORCEINLINE
@@ -66,13 +66,8 @@
 #error
 #endif
 
-#ifndef is
-#define is ==
-#else
-#error
-#endif
 
 #define CONNECT_CONSTEXPR constexpr
 
-#define CONNECT_NAMESPACE_BEGIN namespace Connect{
+#define CONNECT_NAMESPACE_BEGIN namespace Connect {
 #define CONNECT_NAMESPACE_END }

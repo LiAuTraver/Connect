@@ -1,13 +1,9 @@
 #pragma once
 
-#include "pch/qt.widgets.hh"
-#include "include/config.hpp"
-#include "pch/std.container.hh"
-#include "pch/qt.multimedia.hh"
-#include "Services/Blocks.hpp"
-#include "Models/Point.hpp"
-#include "statuswidget.hpp"
-#include "blockswidget.hpp"
+#include <ViewModels/blockswidget.hpp>
+#include <ViewModels/statuswidget.hpp>
+#include <include/config.hpp>
+#include <pch/qt.widgets.hh>
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Models/Block.hpp"
-#include "include/config.hpp"
-#include "Models/Point.hpp"
+#include <Models/Point.hpp>
+#include <include/config.hpp>
 
 CONNECT_NAMESPACE_BEGIN
 class Blocks {
@@ -85,9 +84,9 @@ private:
 	 */
 	std::vector<std::string> imageSource;
 	std::vector<std::string_view> imageGrid;
-	size_type height;
-	size_type width;
-	size_type total;
+	size_type height{};
+	size_type width{};
+	size_type total{};
 	std::filesystem::path path;
 };
 CONNECT_NAMESPACE_END
