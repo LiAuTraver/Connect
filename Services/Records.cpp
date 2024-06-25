@@ -9,13 +9,13 @@ void Connect::Records::printRecords() const {
 				 << " Time: " << std::get<2>(record);
 	}
 }
-bool Connect::Records::saveData(const char *filePath) const {
-	return RecordSerializer.serialize<json>(records, filePath);
+absl::Status Connect::Records::saveData(const char *filePath) const {
+	return RecordSerializer.serialize(records, filePath);
 }
-bool Connect::Records::loadData(const char *filePath) {
-	auto recordsOpt = RecordSerializer.deserialize<json>(filePath);
-	if (not recordsOpt) return qDebug() << "failed to load data from file " << filePath << ". ", false;
-	return records = std::move(recordsOpt.value()), true;
+absl::Status Connect::Records::loadData(const char *filePath) {
+	auto recordsOpt = RecordSerializer.deserialize(filePath);
+	if (not recordsOpt) return qDebug() << "failed to load data from file " << filePath, absl::InvalidArgumentError("failed to load data from file ");
+	return records = std::move(recordsOpt.value()), absl::OkStatus();
 }
 bool Connect::Records::addRecord(const Record &record) {
 	//! note: emplace returns a pair: first is iterator, second indicates whether the emplacement success(returns true);

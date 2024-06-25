@@ -1,6 +1,6 @@
+#include <Helpers/RecordSerializer.hpp>
 #include <Views/leaderboard.hpp>
 
-#include "Helpers/RecordSerializer.hpp"
 #include "ui_Leaderboard.h"
 
 Connect::Leaderboard::Leaderboard(QWidget* parent) :
@@ -30,10 +30,12 @@ void Connect::Leaderboard::onImportRecordButtonClicked() {
 	 * or its my fault? memory allocation? see
 	 * https://forum.qt.io/topic/152714/library-not-registered-error/11
 	 */
-	if (auto newRecordsOpt = RecordSerializer.deserialize<json>(filePath); not newRecordsOpt)
+	if (auto newRecordsOpt = RecordSerializer.deserialize(filePath); not newRecordsOpt)
 		qDebug() << "No suitable records found in the file.";
-	else
-		std::ranges::for_each(newRecordsOpt.value(), [&](auto&& newRecord) {
+	else {
+		auto newRecords = newRecordsOpt.value();
+		std::ranges::for_each(newRecords, [&](auto&& newRecord) {
 			if (not records.addRecord(newRecord)) qDebug() << "failed to add record: already existed";
 		});
+	}
 }

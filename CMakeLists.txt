@@ -32,7 +32,7 @@ elseif (UNIX)
 endif ()
 
 # if failed, use `"M:/vcpkg/installed/x64-windows/share"`
-#list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
+list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
 #include("C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake")
 message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")

@@ -3,6 +3,7 @@
 #include <Helpers/RecordComparator.hpp>
 #include <Models/Record.hpp>
 #include <include/config.hpp>
+#include <pch/absl.status.hh>
 #include <pch/qt.core.hh>
 
 CONNECT_NAMESPACE_BEGIN
@@ -16,13 +17,15 @@ public:
 	explicit Records() = default;
 
 public:
-	CONNECT_FORCE_INLINE bool OnInitialize(const char *filePath = RECORD_FILE_PATH) { return loadData(filePath); }
+	CONNECT_FORCE_INLINE absl::Status OnInitialize(const char *filePath = RECORD_FILE_PATH) {
+		return loadData(filePath);
+	}
 
 	void printRecords() const;
 
-	bool saveData(const char *filePath = RECORD_FILE_PATH) const;
+	absl::Status saveData(const char *filePath = RECORD_FILE_PATH) const;
 
-	bool loadData(const char *filePath = RECORD_FILE_PATH);
+	absl::Status loadData(const char *filePath = RECORD_FILE_PATH);
 
 	//! fixme: ref or not? (multi-thread)
 	_NODISCARD /* CONNECT_FORCE_INLINE */ bool addRecord(const Record &);

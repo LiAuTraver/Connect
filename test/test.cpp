@@ -109,6 +109,7 @@ public:
 };
 
 int main(int argc, char *argv[]) {
+	// absl::InitializeLog();
 //	QApplication app(argc, argv);
 //
 //	MainWindow mainWindow;
@@ -118,7 +119,6 @@ int main(int argc, char *argv[]) {
 	Connect::Records records;
 	records.OnInitialize();
 	records.printRecords();// success!
-	fmt::println("{}",records.saveData());
 	auto opt = std::optional{3};
 	try {
 		opt = std::nullopt;

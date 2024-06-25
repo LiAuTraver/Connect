@@ -6,7 +6,12 @@
 
 CONNECT_NAMESPACE_BEGIN
 #if 1
+inline namespace opt1 {
 using Record = std::tuple<QString, qint64, qint64>;
+}
+namespace opt2 {
+using Record = std::tuple<std::string, qint64, qint64>;
+}
 CONNECT_NAMESPACE_END
 #else
 struct Record {
@@ -25,7 +30,7 @@ struct Record {
 
 	QString name;
 	qint64 score;
-	qint64 elapsedMilliseconds; /// time
+	qint64 elapsedMilliseconds;	 /// time
 
 	_NODISCARD CONNECT_INLINE bool operator<=>(const Record &rhs) const noexcept {
 		if (this->score > rhs.score)
@@ -34,8 +39,7 @@ struct Record {
 			if (this->elapsedMilliseconds < rhs.elapsedMilliseconds)
 				return true;
 			else if (this->elapsedMilliseconds == rhs.elapsedMilliseconds) {
-				if (this->name < rhs.name)
-					return true;
+				if (this->name < rhs.name) return true;
 			}
 		}
 		return false;
