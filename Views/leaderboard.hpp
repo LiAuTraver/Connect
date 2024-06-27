@@ -6,11 +6,9 @@
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
-
 namespace Ui {
 class Leaderboard;
 }
-
 QT_END_NAMESPACE
 CONNECT_NAMESPACE_END
 
@@ -23,18 +21,22 @@ public:
 
 	~Leaderboard() override;
 
-public
-receivers:
-	void onImportRecordButtonClicked();
+public:
+	Leaderboard &setupTable();
 
 private:
 	Ui::Leaderboard *ui;
-	QHBoxLayout *leaderboardLayout;
+	QVBoxLayout *leaderboardLayout;
+	QHBoxLayout *buttonLayout;
+	QTableView *tableView;
 	Records records;
 	QPushButton *importRecordButton;
 	QPushButton *closeButton;
+	static constinit const char *WARNING_MESSAGE;
 signals:
 	void onCloseButtonClicked();
+private slots:
+	void onImportRecordButtonClicked();
+	void onMessageBoxButtonClicked();
 };
-
 CONNECT_NAMESPACE_END

@@ -25,8 +25,8 @@ public:
 private:
 	Ui::Game *ui;
 	QVBoxLayout *mainLayout;
-	Connect::BlocksWidget *blocksWidget;
-	Connect::StatusWidget *statusWidget;
+	BlocksWidget *blocksWidget;
+	StatusWidget *statusWidget;
 	bool isPaused;
 
 private:

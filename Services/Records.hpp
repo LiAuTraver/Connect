@@ -29,14 +29,17 @@ public:
 
 	//! fixme: ref or not? (multi-thread)
 	_NODISCARD /* CONNECT_FORCE_INLINE */ bool addRecord(const Record &);
+	//! If we put the inline function's definition into a .cpp file,
+	//		and if it is called from some other .cpp file,
+	//		we'll get an "unresolved external" error from the linker.
+	// Unless we put the definition in the same header file rather than in .cpp file.
+	_NODISCARD CONNECT_FORCE_INLINE recordsCollection getCollection() const noexcept;
 
-	_NODISCARD CONNECT_FORCE_INLINE recordsCollection getRecords() const noexcept;
-
-	_NODISCARD CONNECT_FORCE_INLINE Records &setRecords(const std::set<Record, RecordComparator> &records) noexcept;
+	_NODISCARD CONNECT_FORCE_INLINE Records &setCollection(const std::set<Record, RecordComparator> &records) noexcept;
 
 	//! fixme: seems not correct when multithreading.
 	_NODISCARD CONNECT_FORCE_INLINE size_type
-	deleteRecord(const Record &record) noexcept(noexcept(records.erase(record)));
+	deleteRecord(const Record &record) noexcept(noexcept(recordCollection.erase(record)));
 
 public:
 	/**
@@ -47,8 +50,21 @@ public:
 	 */
 	static constinit const char *RECORD_FILE_PATH;
 
-private:
-	recordsCollection records{};
+public:
+	recordsCollection recordCollection{};
 };
 
 CONNECT_NAMESPACE_END
+
+inline bool Connect::Records::addRecord(const Record &record) {
+	//! note: emplace returns a pair: first is iterator, second indicates whether the emplacement success(returns true);
+	return recordCollection.emplace(record).second;
+}
+Connect::Records::recordsCollection Connect::Records::getCollection() const noexcept { return recordCollection; }
+Connect::Records &Connect::Records::setCollection(const std::set<Record, RecordComparator> &records) noexcept {
+	return this->recordCollection = records, *this;
+}
+Connect::Records::size_type Connect::Records::deleteRecord(const Record &record) noexcept(
+		noexcept(recordCollection.erase(record))) {
+	return static_cast<size_type>(recordCollection.erase(record));
+}

@@ -4,28 +4,20 @@
 constinit const char *Connect::Records::RECORD_FILE_PATH = R"(M:/Projects/Connect/Resources/records/records.json)";
 
 void Connect::Records::printRecords() const {
-	for (const auto &record: records) {
-		qDebug() << "Name: " << std::get<0>(record) << " Score: " << std::get<1>(record)
-				 << " Time: " << std::get<2>(record);
+	for (const auto &record: recordCollection) {
+		const auto &[name, score, time] = record;
+		qDebug() << "Name: " << name << " Score: " << score
+				 << " Time: " << time;
+		fmt::println("Name: {} Scroe: {} Time: {}",name.toStdString(),score,time);
 	}
 }
 absl::Status Connect::Records::saveData(const char *filePath) const {
-	return RecordSerializer.serialize(records, filePath);
+	return RecordSerializer.serialize(recordCollection, filePath);
 }
 absl::Status Connect::Records::loadData(const char *filePath) {
 	auto recordsOpt = RecordSerializer.deserialize(filePath);
-	if (not recordsOpt) return qDebug() << "failed to load data from file " << filePath, absl::InvalidArgumentError("failed to load data from file ");
-	return records = std::move(recordsOpt.value()), absl::OkStatus();
-}
-bool Connect::Records::addRecord(const Record &record) {
-	//! note: emplace returns a pair: first is iterator, second indicates whether the emplacement success(returns true);
-	return records.emplace(record).second;
-}
-Connect::Records::recordsCollection Connect::Records::getRecords() const noexcept { return records; }
-Connect::Records &Connect::Records::setRecords(const std::set<Record, RecordComparator> &records) noexcept {
-	return this->records = records, *this;
-}
-Connect::Records::size_type Connect::Records::deleteRecord(const Record &record) noexcept(
-		noexcept(records.erase(record))) {
-	return static_cast<size_type>(records.erase(record));
+	if (not recordsOpt)
+		return qDebug() << "failed to load data from file " << filePath,
+			   absl::InvalidArgumentError("failed to load data from file ");
+	return recordCollection = std::move(recordsOpt.value()), absl::OkStatus();
 }

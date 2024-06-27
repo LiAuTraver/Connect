@@ -18,9 +18,9 @@ Connect::MainWindow::~MainWindow() {
 void Connect::MainWindow::handleGameStart() {
 	if (not game)
 		this->game = new Game(this);
-	menu = dynamic_cast<Menu *>(this->takeCentralWidget());
+	menu = dynamic_cast<Menu *>(this->takeCentralWidget()); //! Qt Gui take the widget away I must take back
 	this->setCentralWidget(game);
-	// this->destroyChildWidget(menu); // destroy for now
+	// this->destroyChildWidget(menu);
 }
 void Connect::MainWindow::handleLeaderboardStart() {
 	if (not leaderboard)

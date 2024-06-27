@@ -32,7 +32,7 @@ elseif (UNIX)
 endif ()
 
 # if failed, use `"M:/vcpkg/installed/x64-windows/share"`
-list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
+#list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
 #include("C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake")
 message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
@@ -73,6 +73,7 @@ find_package(fmt CONFIG REQUIRED)
 find_package(absl CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(magic_enum CONFIG REQUIRED)
+#find_package(mp-units CONFIG REQUIRED)
 set(TARGET_LINK_PACKAGES
         fmt::fmt
         absl::base
@@ -80,6 +81,10 @@ set(TARGET_LINK_PACKAGES
         absl::any
         nlohmann_json::nlohmann_json
         magic_enum::magic_enum
+#        mp-units::si
+#        mp-units::cgs
+#        mp-units::hep
+#        mp-units::iau
 )
 
 set(PCH ${CMAKE_SOURCE_DIR}/pch)

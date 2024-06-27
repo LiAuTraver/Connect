@@ -66,8 +66,24 @@
 #error
 #endif
 
-
 #define CONNECT_CONSTEXPR constexpr
 
 #define CONNECT_NAMESPACE_BEGIN namespace Connect {
 #define CONNECT_NAMESPACE_END }
+
+#define CONNECT_OPT_1 1
+#define CONNECT_OPT_2 0
+
+#if CONNECT_OPT_1 == 1 && CONNECT_OPT_2 == 0
+#define CONNECT_OPT_1_NAMESPACE_BEGIN inline namespace opt1 {
+#define CONNECT_OPT_1_NAMESPACE_END }
+#define CONNECT_OPT_2_NAMESPACE_BEGIN namespace opt2 {
+#define CONNECT_OPT_2_NAMESPACE_END }
+#elif CONNECT_OPT_1 == 0 && CONNECT_OPT_2 == 1
+#define CONNECT_OPT_1_NAMESPACE_BEGIN namespace opt1 {
+#define CONNECT_OPT_1_NAMESPACE_END }
+#define CONNECT_OPT_2_NAMESPACE_BEGIN inline namespace opt2 {
+#define CONNECT_OPT_2_NAMESPACE_END }
+#else
+#error "Choose one opt namespace to apply."
+#endif

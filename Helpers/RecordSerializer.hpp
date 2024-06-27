@@ -10,7 +10,7 @@
 #include <pch/std.container.hh>
 #include <pch/std.io.hh>
 CONNECT_NAMESPACE_BEGIN
-inline namespace opt1 {
+CONNECT_OPT_1_NAMESPACE_BEGIN
 class RecordSerializer extends ISerializer {
 public:
 	RecordSerializer() = default;
@@ -25,27 +25,29 @@ public:
 								  OpenModeFlag flag = OpenModeFlag::WriteOnly);
 
 private:
-	static recordsCollectionOpt process(const QByteArray&);
+	static recordsCollectionOpt process(const QByteArray&) noexcept;
 
 	/* note: Qt itself is almost exception-safe, except for memory allocation failure etc. I do not consider it. */
 	static recordsCollectionOpt toRecords(const QJsonArray&) noexcept;
 };
 
 inline RecordSerializer::recordsCollectionOpt RecordSerializer::deserialize(const char* filePath, OpenModeFlag flag) {
-	// QFile file(filePath);
-	// if (not file.open(static_cast<QIODeviceBase::OpenModeFlag>(flag)))
-	// 	return qWarning() << "Could not open file.", std::nullopt;
-	// return process(file.readAll());
-	std::fstream file(filePath);
-	if (not file.is_open()) return qWarning() << "Could not open file.", std::nullopt;
-	std::stringstream ss;
-	ss << file.rdbuf();	 // Read the file content into stringstream
-	file.close();
-
-	std::string str = ss.str();	 // Convert stringstream to std::string
-	// LOG(INFO) << str;
-	QByteArray byteArray(str.c_str(), str.size());	// Create QByteArray from std::string
-	return process(byteArray);
+	QFile file(filePath);
+	if (not file.open(static_cast<QIODeviceBase::OpenModeFlag>(flag)))
+		return qWarning() << "Could not open file.", std::nullopt;
+	return process(file.readAll());
+#pragma region folded
+	// std::fstream file(filePath);
+	// if (not file.is_open()) return qWarning() << "Could not open file.", std::nullopt;
+	// std::stringstream ss;
+	// ss << file.rdbuf();	 // Read the file content into stringstream
+	// file.close();
+	//
+	// std::string str = ss.str();	 // Convert stringstream to std::string
+	// // LOG(INFO) << str;
+	// QByteArray byteArray(str.c_str(), str.size());	// Create QByteArray from std::string
+	// return process(byteArray);
+#pragma endregion
 }
 
 //! note: code here are highly nested
@@ -56,63 +58,62 @@ inline absl::Status RecordSerializer::serialize(const recordsCollection& records
 		recordsJsonArray.append(QJsonObject{
 				{"name", std::get<0>(record)}, {"score", std::get<1>(record)}, {"time", std::get<2>(record)}});
 	});
-	if (QFile file(filePath); not file.open(static_cast<QIODeviceBase::OpenModeFlag>(flag))) {
+	if (QFile file(filePath); not file.open(static_cast<QIODeviceBase::OpenModeFlag>(flag)))
 		return qWarning() << "Failed to open file for writing:" << file.errorString(),
 			   absl::PermissionDeniedError("Failed to open file for writing.");
-	} else {
-		file.write(QJsonDocument({"records", recordsJsonArray}).toJson(QJsonDocument::Indented));
-		return file.close(), absl::OkStatus();
+	else
+		return file.write(QJsonDocument({"records", recordsJsonArray}).toJson(QJsonDocument::Indented)), file.close(),
+			   absl::OkStatus();
+}
+
+inline RecordSerializer::recordsCollectionOpt RecordSerializer::process(const QByteArray& data) noexcept {
+	QJsonParseError parseError;
+	QJsonDocument document(QJsonDocument::fromJson(data, &parseError));
+
+	if (parseError.error != QJsonParseError::NoError) {
+		qWarning() << "Failed to parse JSON: " << parseError.errorString();
+		return std::nullopt;
 	}
+
+	if (!document.isArray()) {
+		qWarning() << "JSON is not an array; load data failed.";
+		return std::nullopt;
+	}
+
+	QJsonArray jsonArray = document.array();
+	if (jsonArray.isEmpty()) {
+		qWarning() << "JSON array is empty.";
+		return std::nullopt;
+	}
+
+	if (!jsonArray[0].isString() || jsonArray[0].toString() != "records") {
+		qWarning() << "First element is not 'records' key.";
+		return std::nullopt;
+	}
+
+	if (!jsonArray[1].isArray()) {
+		qWarning() << "Second element is not an array.";
+		return std::nullopt;
+	}
+
+	QJsonArray recordsArray = jsonArray[1].toArray();
+	return toRecords(recordsArray);
 }
 
-inline RecordSerializer::recordsCollectionOpt RecordSerializer::process(const QByteArray& data)  {
-    QJsonParseError parseError;
-    QJsonDocument document(QJsonDocument::fromJson(data, &parseError));
-
-    if (parseError.error != QJsonParseError::NoError) {
-        qWarning() << "Failed to parse JSON: " << parseError.errorString();
-        return std::nullopt;
-    }
-
-    if (!document.isArray()) {
-        qWarning() << "JSON is not an array; load data failed.";
-        return std::nullopt;
-    }
-
-    QJsonArray jsonArray = document.array();
-    if (jsonArray.isEmpty()) {
-        qWarning() << "JSON array is empty.";
-        return std::nullopt;
-    }
-
-    if (!jsonArray[0].isString() || jsonArray[0].toString() != "records") {
-        qWarning() << "First element is not 'records' key.";
-        return std::nullopt;
-    }
-
-    if (!jsonArray[1].isArray()) {
-        qWarning() << "Second element is not an array.";
-        return std::nullopt;
-    }
-
-    QJsonArray recordsArray = jsonArray[1].toArray();
-    return toRecords(recordsArray);
+inline RecordSerializer::recordsCollectionOpt RecordSerializer::toRecords(const QJsonArray& jsonArray) noexcept {
+	recordsCollection records;
+	std::ranges::for_each(jsonArray, [&](const auto& array) mutable -> void {
+		QJsonObject recordObject = array.toObject();
+		records.emplace(Record{recordObject["name"].toString({}),
+							   recordObject["score"].toInt(std::numeric_limits<size_type>::quiet_NaN()),
+							   recordObject["time"].toInt(std::numeric_limits<size_type>::quiet_NaN())});
+	});
+	return std::make_optional(records);
 }
 
-inline RecordSerializer::recordsCollectionOpt RecordSerializer::toRecords(const QJsonArray& jsonArray)noexcept {
-    recordsCollection records;
-    std::ranges::for_each(jsonArray, [&](const auto& array) mutable -> void {
-        QJsonObject recordObject = array.toObject();
-        records.emplace(Record{
-            recordObject["name"].toString({}),
-            recordObject["score"].toInt(std::numeric_limits<size_type>::quiet_NaN()),
-            recordObject["time"].toInt(std::numeric_limits<size_type>::quiet_NaN())
-        });
-    });
-    return std::make_optional(records);
-}
-
-//! fixme: WHY PASSING OBJECT ALWAYS BEEN NULL AND SPENT ME TWO AFTERNOON TO FIX AND FINALLY CONVERT TO PASSING THE ARRAY AND CONVERT TO OBJECT AGAIN
+#pragma region failed sol
+//! fixme: WHY PASSING OBJECT ALWAYS BEEN NULL AND SPENT ME TWO AFTERNOON TO FIX AND FINALLY CONVERT TO PASSING THE
+//! ARRAY AND CONVERT TO OBJECT AGAIN
 //
 // inline RecordSerializer::recordsCollectionOpt RecordSerializer::process(const QByteArray& data) {
 // 	QJsonParseError parseError;
@@ -151,11 +152,13 @@ inline RecordSerializer::recordsCollectionOpt RecordSerializer::toRecords(const 
 // 	});
 // 	return std::make_optional(records);
 // }
+#pragma endregion
 
 inline constexpr RecordSerializer RecordSerializer;
-}  // namespace opt1
+CONNECT_OPT_1_NAMESPACE_END
 
-namespace opt2 {
+// opt 2 is nothing but another choice because the error described above !
+CONNECT_OPT_2_NAMESPACE_BEGIN
 class RecordSerializer extends ISerializer {
 public:
 	RecordSerializer() = default;
@@ -204,6 +207,6 @@ inline absl::Status RecordSerializer::serialize(const recordsCollection& records
 	return absl::OkStatus();
 }
 inline constexpr RecordSerializer RecordSerializer;
-}  // namespace opt2
+CONNECT_OPT_2_NAMESPACE_END
 
 CONNECT_NAMESPACE_END
