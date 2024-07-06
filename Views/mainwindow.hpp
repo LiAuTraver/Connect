@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Services/Sound.hpp>
+#include <ViewModels/pastgamewidget.hpp>
 #include <Views/about.hpp>
 #include <Views/game.hpp>
 #include <Views/leaderboard.hpp>
@@ -12,9 +14,7 @@ CONNECT_NAMESPACE_BEGIN
 namespace Ui {
 class MainWindow;
 }
-
 CONNECT_NAMESPACE_END
-
 QT_END_NAMESPACE
 
 CONNECT_NAMESPACE_BEGIN
@@ -26,35 +26,40 @@ class MainWindow extends public QMainWindow {
 
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
-
 	~MainWindow() override;
 
+public:
+	using enum PastGameWidget::Option;
+	enum Page { kMenu, kGame, kLeaderboard, kAbout, kThis };
+
+public:
+	void initializeConnections(Page);
+
 private:
-	CONNECT_FORCE_INLINE void destroyChildWidget(auto *&childWidget);
-
-	CONNECT_FORCE_INLINE void initializeConnections();
-
-	CONNECT_FORCE_INLINE void initializeMenuConnections();
-
-private senders:
 	Ui::MainWindow *ui;
 	Menu *menu;
 	Game *game;
 	Leaderboard *leaderboard;
 	About *about;
+	SoundEvent soundEvent{};
+	QString gameBGM{};
 
 private slots:
-	void handleGameStart();
+	// ^^^^ note: the `slots` keyword ais optional for Qt 5 & 6, but necessary for Qt 4 or so.
+	// I just keep it for clarity and maintainity;
+	// But if the `connect` func was used as Qt 4's way: connect(...,SIGNAL(...),...,SLOT(...)),
+	// the `slot` keyword cannot be omitted.
+	void handleAddNewRecord(qint64, qint64);
 
-	void handleLeaderboardStart();
+	// ReSharper disable CppRedundantQualifier
+	void handleExitFromGame(Connect::PastGameWidget::Option);
 
-	void handleAboutPageStart();
+	void handleStartFromMenu(Connect::MainWindow::Page);
 
-	void handleGameExit();
+	void handlePageExitToMenu(Connect::MainWindow::Page);
+	// ReSharper enable CppRedundantQualifier
 
-	void handleAboutExit();
-
-	void handleLeaderboardExit();
+	void handleVolumeChanged(int);
 };
 
 CONNECT_NAMESPACE_END

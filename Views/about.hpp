@@ -23,5 +23,6 @@ private:
 	Ui::About *ui;
 signals:
 	void onCloseButtonCicked();
+	void onVolumnSliderchanged(int);
 };
 CONNECT_NAMESPACE_END

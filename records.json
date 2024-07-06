@@ -1,0 +1,70 @@
+[
+    "records",
+    [
+        {
+            "name": "Alice",
+            "score": 10,
+            "time": 2000
+        },
+        {
+            "name": "Bob",
+            "score": 10,
+            "time": 2000
+        },
+        {
+            "name": "Charlie",
+            "score": 9,
+            "time": 1500
+        },
+        {
+            "name": "Dave",
+            "score": 8,
+            "time": 3000
+        },
+        {
+            "name": "Eve",
+            "score": 8,
+            "time": 3500
+        },
+        {
+            "name": "Frank",
+            "score": 7,
+            "time": 4000
+        },
+        {
+            "name": "Grace",
+            "score": 7,
+            "time": 4500
+        },
+        {
+            "name": "Heidi",
+            "score": 6,
+            "time": 5000
+        },
+        {
+            "name": "Ivan",
+            "score": 6,
+            "time": 5500
+        },
+        {
+            "name": "Judy",
+            "score": 5,
+            "time": 6000
+        },
+        {
+            "name": "Kevin",
+            "score": 5,
+            "time": 6500
+        },
+        {
+            "name": "Leo",
+            "score": 4,
+            "time": 7000
+        },
+        {
+            "name": "Mallory",
+            "score": 4,
+            "time": 7500
+        }
+    ]
+]

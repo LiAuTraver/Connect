@@ -20,7 +20,7 @@
 #include <compare>
 #endif // __cplusplus >= 202002L
 
-#if __cplusplus >= 202203L
+#if __cplusplus >= 202203L || 1  // :P
 #include <expected>
 #endif // __cplusplus >= 202203L
 

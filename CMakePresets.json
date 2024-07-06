@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "Qt6-Debug-Windows",
+      "hidden": false,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_AUTOMOC": "ON",
+        "CMAKE_AUTORCC": "ON",
+        "CMAKE_AUTOUIC": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "QT_VERSION_MAJOR": "6",
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_CMAKE_PATH": "M:/vcpkg/installed/x64-windows",
+        "Qt6MSVC": "C:/Qt/6.7.2/msvc2019_64/lib/cmake/Qt6",
+        "Qt6MinGW": "C:/Qt/6.7.2/mingw_64/lib/cmake/Qt6",
+        "Qt6Clang": "C:/Qt/6.7.2/msvc2019_64/lib/cmake/Qt6"
+      }
+    },
+    {
+      "name": "Debug-Windows",
+      "hidden": false,
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "QT_VERSION_MAJOR": "6",
+        "CMAKE_TOOLCHAIN_FILE": "C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_CMAKE_PATH": "M:/vcpkg/installed/x64-windows"
+      }
+    }
+  ]
+}

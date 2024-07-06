@@ -9,7 +9,7 @@ struct Point {
 	size_type y;
 	size_type x;
 
-	Point(size_type y, size_type x) : y(y), x(x) {}
+	Point(const size_type y, const size_type x) : y(y), x(x) {}
 
 	_NODISCARD constexpr inline bool operator==(const Point &rhs) const noexcept {
 		return this->y == rhs.y && this->x == rhs.x;

@@ -22,6 +22,7 @@ public:
 	~Leaderboard() override;
 
 public:
+	void saveData() const;
 	Leaderboard &setupTable();
 
 private:
@@ -29,14 +30,23 @@ private:
 	QVBoxLayout *leaderboardLayout;
 	QHBoxLayout *buttonLayout;
 	QTableView *tableView;
-	Records records;
 	QPushButton *importRecordButton;
 	QPushButton *closeButton;
+	Records records;
+public:
+	//! no ref
+	//! do not pass reference in slots, they're multi-threaded
+	void onGameWinChangeRecord(qint64, qint64);
+
+private:
+	absl::StatusOr<QString> onAddingRecord();
+	void acquireName(Record & pendingRecord);
 	static constinit const char *WARNING_MESSAGE;
+	static const QRegularExpression invalidPattern;
 signals:
-	void onCloseButtonClicked();
+	void onLeaderboradCloseButtonClicked();
 private slots:
-	void onImportRecordButtonClicked();
-	void onMessageBoxButtonClicked();
+	void handleImportRecordButtonClicked();
+	void handleMessageBoxButtonClicked();
 };
 CONNECT_NAMESPACE_END

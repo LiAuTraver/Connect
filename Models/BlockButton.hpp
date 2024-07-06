@@ -1,9 +1,9 @@
 #pragma once
 
+#include <include/details.hpp>
 #include <include/config.hpp>
 #include <pch/qt.core.hh>
 #include <pch/qt.gui.hh>
-#include <Helpers/Actions.hpp>
 
 CONNECT_NAMESPACE_BEGIN
 class BlockButton extends public QPushButton {

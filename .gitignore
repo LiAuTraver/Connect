@@ -38,6 +38,7 @@ snakeRebuild/
 # Clion-Cmake
 .idea/
 cmake-build-debug-visual-studio/
+cmake-build-qt6-debug-windows/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -370,3 +371,5 @@ FodyWeavers.xsd
 
 cmake-vscode-build/
 out/
+
+*.bak

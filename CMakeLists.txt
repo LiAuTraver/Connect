@@ -1,186 +1,147 @@
-set(CMAKE_SYSTEM_NAME Windows)
 cmake_minimum_required(VERSION 3.26)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(QRC_FILE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc)
-set(QRC_PYTHON_SCRIPT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/generate_qrc.py)
+project(Connect)
+
+include(${CMAKE_SOURCE_DIR}/CMake/Qt-common.cmake)
+include(${CMAKE_SOURCE_DIR}/CMake/vcpkg-common.cmake)
+include(${CMAKE_SOURCE_DIR}/CMake/common.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/Qt-import-dlls.cmake)
+
+# Set project-specific settings
 set(PROJECT_NAME Connect)
-project(${PROJECT_NAME})
-set(QT_VERSION_MAJOR "6")
+set(QRC_FILE_PATH resources.qrc)
+set(QRC_PYTHON_SCRIPT_PATH generate_qrc.py)
+set(QRC_JSON_FILE_PATH resources.json)
 
-if (WIN32)
-    message(STATUS "Windows")
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        message(STATUS "Using MSVC.")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest /Zc:__cplusplus /Zc:inline /Zc:wchar_t /EHsc")
-        set(CMAKE_PREFIX_PATH "C:/Qt/6.6.3/msvc2019_64/lib/cmake/Qt6")
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        message(STATUS "Using MinGW g++.")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
-        set(CMAKE_PREFIX_PATH "C:/Qt/6.6.3/mingw_64/lib/cmake/Qt6")
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message(STATUS "Using llvm clang++.")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++latest")
-        set(CMAKE_PREFIX_PATH "C:/Qt/6.6.3/msvc2019_64/lib/cmake/Qt6")
-    endif ()
-elseif (UNIX)
-    message(STATUS "Linux, using g++.")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
-endif ()
-
-# if failed, use `"M:/vcpkg/installed/x64-windows/share"`
-#list(APPEND CMAKE_PREFIX_PATH "M:/vcpkg/installed/x64-windows")
-#include("C:/Users/LiAu/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake")
-message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
-message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-message(STATUS "CMAKE_TOOLCHAIN_FILE: ${CMAKE_TOOLCHAIN_FILE}")
-find_package(Qt6
-        REQUIRED COMPONENTS
-        Core
-        Gui
-        Widgets
-        Multimedia
-        Xml
-        Qml
-        Quick
-        QuickWidgets
-        REQUIRED
-)
-
-
-# Find Python 3 interpreter
 find_package(Python3 REQUIRED)
+
 if (NOT Python3_EXECUTABLE)
     message(FATAL_ERROR "Python 3 interpreter not found")
 endif ()
 # Custom command to generate the .qrc file
 add_custom_command(
-        OUTPUT ${QRC_FILE_PATH}
-        COMMAND ${Python3_EXECUTABLE} ${QRC_PYTHON_SCRIPT_PATH} ${CMAKE_CURRENT_SOURCE_DIR} ${QRC_FILE_PATH}
+        OUTPUT ${QRC_FILE_PATH} ${QRC_JSON_FILE_PATH}
+        COMMAND ${Python3_EXECUTABLE} ${QRC_PYTHON_SCRIPT_PATH} ${CMAKE_CURRENT_SOURCE_DIR} ${QRC_FILE_PATH} ${QRC_JSON_FILE_PATH}
         DEPENDS ${QRC_PYTHON_SCRIPT_PATH}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Generating resources.qrc..."
+        COMMENT "Generating resources.qrc and resources.json..."
 )
-
-# Custom target that depends on the .qrc file
-add_custom_target(generate_qrc ALL DEPENDS ${QRC_FILE_PATH})
-
-
+# Include necessary packages
+find_package(Qt6 REQUIRED COMPONENTS
+        Core
+        Gui
+        Widgets
+        Multimedia
+        REQUIRED
+)
 find_package(fmt CONFIG REQUIRED)
 find_package(absl CONFIG REQUIRED)
-find_package(nlohmann_json CONFIG REQUIRED)
 find_package(magic_enum CONFIG REQUIRED)
-#find_package(mp-units CONFIG REQUIRED)
+
+set(TARGET_QT_LINK_PACKAGES
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Multimedia
+)
+
 set(TARGET_LINK_PACKAGES
         fmt::fmt
         absl::base
         absl::log
         absl::any
-        nlohmann_json::nlohmann_json
+        absl::status
         magic_enum::magic_enum
-#        mp-units::si
-#        mp-units::cgs
-#        mp-units::hep
-#        mp-units::iau
 )
 
-set(PCH ${CMAKE_SOURCE_DIR}/pch)
+# `resource` now is the name when we use `Q_INIT_RESOURCE()`
+# connot forget to add this to the target
+qt_add_resources(resources ${QRC_FILE_PATH})
+
+
+# Include PCH
+set(PCH ${CMAKE_CURRENT_SOURCE_DIR}/pch)
 file(GLOB GLOBAL_PCH_HEADER "${PCH}/*.hh")
-# Define a function to collect and filter files
-function(collect_and_filter_files out_var file_extension)
-    file(GLOB_RECURSE files "${CMAKE_CURRENT_SOURCE_DIR}/*.${file_extension}")
-    list(FILTER files EXCLUDE REGEX "/build/")
-    list(FILTER files EXCLUDE REGEX "/cmake-build-debug-visual-studio/")
-    list(FILTER files EXCLUDE REGEX "/cmake-vscode-build/")
-    list(FILTER files EXCLUDE REGEX "/Test/")
-    set(${out_var} ${files} PARENT_SCOPE)
-endfunction()
 
-# Collect and filter the files
-#collect_and_filter_files(SOURCE_FILE cpp)
-#collect_and_filter_files(QT_UI_FILE ui)
-#collect_and_filter_files(HEADER_FILE hpp)
-#
-#message(STATUS "SOURCE_FILE: ${SOURCE_FILE}")
-#message(STATUS "HEADER_FILE: ${HEADER_FILE}")
-#message(STATUS "QT_UI_FILE: ${QT_UI_FILE}")
-
-set(SOURCE_FILE
-        Models/Block.cpp
-        Services/Blocks.cpp
-        Views/game.cpp
-        Views/menu.cpp
-        Views/mainwindow.cpp
-        ViewModels/blockswidget.cpp
-        ViewModels/statuswidget.cpp
-        Views/leaderboard.cpp
-        Views/about.cpp
-        Services/Records.cpp
-)
+# Define UI files
 set(UI_FILE
-        Views/game.ui
-        Views/menu.ui
-        Views/mainwindow.ui
-        ViewModels/blockswidget.ui
-        ViewModels/statuswidget.ui
-        Views/leaderboard.ui
-        Views/about.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/game.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/menu.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/blockswidget.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/statuswidget.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/leaderboard.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/about.ui
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/pastgamewidget.ui
 )
+
+# Define source files
+set(SOURCE_FILE
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/game.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/menu.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/blockswidget.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/statuswidget.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/leaderboard.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/about.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Records.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/addrecorddialog.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/pastgamewidget.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Sound.cpp
+)
+
+# Define header files
 set(HEADER_FILE
-        Helpers/RecordSerializer.hpp
-        Models/Block.hpp
-        Models/Point.hpp
-        Services/Blocks.hpp
-        Views/game.hpp
-        Views/menu.hpp
-        include/config.hpp
-        Views/mainwindow.hpp
-        ViewModels/blockswidget.hpp
-        ViewModels/statuswidget.hpp
-        Helpers/Animation.hpp
-        Helpers/Actions.hpp
-        Helpers/Sound.hpp
-        Models/BlockButton.hpp
-        Views/leaderboard.hpp
-        Models/Record.hpp
-        Services/Records.hpp
-        Helpers/RecordComparator.hpp
-        Views/about.hpp
-        Contracts/ISerializer.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/RecordSerializer.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Point.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Blocks.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/game.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/menu.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/config.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/mainwindow.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/blockswidget.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/statuswidget.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Animation.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/details.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Sound.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/BlockButton.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/leaderboard.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Models/Record.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Services/Records.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Views/about.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/addrecorddialog.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/ButtonComparator.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ViewModels/pastgamewidget.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Helpers/ResourcesSerializer.hpp
 )
 
-
+# Add executable
 add_executable(${PROJECT_NAME}
         main.cpp
+        ${resources}
         ${HEADER_FILE}
         ${SOURCE_FILE}
-        ${QT_UI_FILE}
-        ${CMAKE_CURRENT_SOURCE_DIR}/resources.qrc
+        ${UI_FILE}
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-        Qt::Core
-        Qt::Gui
-        Qt::Widgets
-        Qt::Multimedia
-        Qt::Xml
-        Qt::Qml
-        Qt::Quick
+        ${TARGET_QT_LINK_PACKAGES}
         ${TARGET_LINK_PACKAGES}
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${CMAKE_SOURCE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_precompile_headers(${PROJECT_NAME} PRIVATE
         ${GLOBAL_PCH_HEADER}
 )
 
 
-# Ensure the build depends on the custom target
-add_dependencies(${PROJECT_NAME} generate_qrc)
+# Add custom target
+add_custom_target(generate_qrc ALL DEPENDS ${QRC_FILE_PATH} ${QRC_JSON_FILE_PATH})
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/test_prog.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/clion_gen.cmake)
+# Ensure the build depends on the custom target, temporarily disable it because it runs every time as a dependency.
+# add_dependencies(${PROJECT_NAME} generate_qrc)
+# ^^^^^^ run it via cmake --build .(build dir) --target generate_qrc
+
+include(CMake/unit_test.cmake)

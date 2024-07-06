@@ -439,6 +439,18 @@
         <file alias="images/written_book.png">M:/Projects/Connect/Resources/images/written_book.png</file>
         <file alias="images/yellow_candle.png">M:/Projects/Connect/Resources/images/yellow_candle.png</file>
         <file alias="images/yellow_dye.png">M:/Projects/Connect/Resources/images/yellow_dye.png</file>
-        <file alias="audios/winmusic.mp3">M:/Projects/Connect/Resources/audios/winmusic.mp3</file>
+        <file alias="audios/Cerebrawl.mp3">M:/Projects/Connect/Resources/audios/Cerebrawl.mp3</file>
+        <file alias="audios/Cerebrawl_In-Game.mp3">M:/Projects/Connect/Resources/audios/Cerebrawl_In-Game.mp3</file>
+        <file alias="audios/Choose_Your_Seeds_In-Game.mp3">M:/Projects/Connect/Resources/audios/Choose_Your_Seeds_In-Game.mp3</file>
+        <file alias="audios/Crazy_Dave's_Greeting.mp3">M:/Projects/Connect/Resources/audios/Crazy_Dave's_Greeting.mp3</file>
+        <file alias="audios/Crazy_Dave_In-Game.mp3">M:/Projects/Connect/Resources/audios/Crazy_Dave_In-Game.mp3</file>
+        <file alias="audios/Grasswalk.mp3">M:/Projects/Connect/Resources/audios/Grasswalk.mp3</file>
+        <file alias="audios/Graze_the_Roof_In-Game.mp3">M:/Projects/Connect/Resources/audios/Graze_the_Roof_In-Game.mp3</file>
+        <file alias="audios/Loonboon_In-Game.mp3">M:/Projects/Connect/Resources/audios/Loonboon_In-Game.mp3</file>
+        <file alias="audios/Moongrains_In-Game.mp3">M:/Projects/Connect/Resources/audios/Moongrains_In-Game.mp3</file>
+        <file alias="audios/Rigor_Mormist_In-Game.mp3">M:/Projects/Connect/Resources/audios/Rigor_Mormist_In-Game.mp3</file>
+        <file alias="audios/Watery_Graves_In-Game.mp3">M:/Projects/Connect/Resources/audios/Watery_Graves_In-Game.mp3</file>
+        <file alias="audios/Zen_Garden_In-Game.mp3">M:/Projects/Connect/Resources/audios/Zen_Garden_In-Game.mp3</file>
+        <file alias="audios/Zombotany_Bonus_Track.mp3">M:/Projects/Connect/Resources/audios/Zombotany_Bonus_Track.mp3</file>
     </qresource>
 </RCC>

@@ -1,7 +1,7 @@
 #include <Helpers/RecordSerializer.hpp>
 #include <Services/Records.hpp>
 
-constinit const char *Connect::Records::RECORD_FILE_PATH = R"(M:/Projects/Connect/Resources/records/records.json)";
+std::string Connect::Records::RECORD_FILE_PATH = (std::filesystem::current_path() / "records.json").string();
 
 void Connect::Records::printRecords() const {
 	for (const auto &record: recordCollection) {
@@ -12,12 +12,11 @@ void Connect::Records::printRecords() const {
 	}
 }
 absl::Status Connect::Records::saveData(const char *filePath) const {
-	return RecordSerializer.serialize(recordCollection, filePath);
+	return RecordSerializer.serialize<json>(recordCollection, filePath);
 }
 absl::Status Connect::Records::loadData(const char *filePath) {
-	auto recordsOpt = RecordSerializer.deserialize(filePath);
-	if (not recordsOpt)
+	if (auto recordsOpt = RecordSerializer.deserialize<json>(filePath); not recordsOpt)
 		return qDebug() << "failed to load data from file " << filePath,
 			   absl::InvalidArgumentError("failed to load data from file ");
-	return recordCollection = std::move(recordsOpt.value()), absl::OkStatus();
+	else return recordCollection = std::move(recordsOpt.value()), absl::OkStatus();
 }

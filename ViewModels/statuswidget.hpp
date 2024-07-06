@@ -5,9 +5,7 @@
 #include <pch/qt.core.hh>
 #include <pch/qt.widgets.hh>
 
-#include "Helpers/Actions.hpp"
 #include "ui_StatusWidget.h"
-
 
 CONNECT_NAMESPACE_BEGIN
 QT_BEGIN_NAMESPACE
@@ -18,8 +16,11 @@ QT_END_NAMESPACE
 CONNECT_NAMESPACE_END
 
 CONNECT_NAMESPACE_BEGIN
-class StatusWidget extends public QWidget{
+class StatusWidget extends public QWidget {
 	Q_OBJECT
+
+public:
+	using size_type = qsizetype;
 
 public:
 	explicit StatusWidget(QWidget *parent = nullptr);
@@ -31,18 +32,18 @@ public:
 
 	StatusWidget &initializeLayout();
 
-	StatusWidget &win();
+	QElapsedTimer win();
 
 	StatusWidget &onPauseButtonToggled(std::string_view enumName);
 
-public
-receivers:
-
-	// note: Qt connect-related function must return nothing(void) or return a static type or something(todo).
+public:
+	// note: Qt connect-related function must return nothing(void) or return a static type or
+	// something(todo).
 	void updateElapsedTime() const;
 
-public
-senders:
+	void updateScore(int) const;
+
+public:
 	QPushButton *pauseButton;
 	QTimer *timer;
 
@@ -51,12 +52,13 @@ private:
 	QHBoxLayout *statusLayout;
 	QElapsedTimer elapsedTimer;
 	QLabel *timeLabel;
+	QLabel *scoreLabel;
 	QTime startTime;
 	static qint64 pausedTime;
 
 private:
 	StatusWidget &initializeTime();
 
-	StatusWidget &onButtonEliminate(QPushButton * button);
+	void onButtonEliminate(QPushButton * button) const;
 };
 CONNECT_NAMESPACE_END

@@ -1,21 +1,5 @@
 #pragma once
 
-#ifndef DEBUG
-#define DEBUG DEBUG
-#endif
-#ifndef INFO
-#define INFO INFO
-#endif
-#ifndef WARNING
-#define WARNING WARNING
-#endif
-#ifndef ERROR
-#define ERROR ERROR
-#endif
-#ifndef FATAL
-#define FATAL FATAL
-#endif
-
 #ifndef implements
 #define implements :
 #endif
@@ -36,8 +20,7 @@
 #if __has_cpp_attribute(maybe_unused)
 #define CONNECT_MAYBE_UNUSED [[maybe_unused]]
 #else
-// for now, fixme
-#define CONNECT_MAYBE_UNUSED [[maybe_unused]]
+#define CONNECT_MAYBE_UNUSED
 #endif
 #if defined(__GNUC__) || defined(__clang__)
 #define CONNECT_FORCE_INLINE inline __attribute__((always_inline))
@@ -51,21 +34,6 @@
 #define _NODISCARD [[nodiscard]]
 #endif
 
-#define CONNECT_IMAGES_FOLDER ":/images/"
-#define CONNECT_IMAGE_PATH(image) CONNECT_IMAGES_FOLDER image
-
-#ifndef receivers
-#define receivers
-#else
-#error
-#endif
-
-#ifndef senders
-#define senders
-#else
-#error
-#endif
-
 #define CONNECT_CONSTEXPR constexpr
 
 #define CONNECT_NAMESPACE_BEGIN namespace Connect {
@@ -73,6 +41,7 @@
 
 #define CONNECT_OPT_1 1
 #define CONNECT_OPT_2 0
+#define CONNECT_NAMESPACE_DETAILS_INLINE 1
 
 #if CONNECT_OPT_1 == 1 && CONNECT_OPT_2 == 0
 #define CONNECT_OPT_1_NAMESPACE_BEGIN inline namespace opt1 {
@@ -86,4 +55,14 @@
 #define CONNECT_OPT_2_NAMESPACE_END }
 #else
 #error "Choose one opt namespace to apply."
+#endif
+
+#if CONNECT_NAMESPACE_DETAILS_INLINE == 0
+#define CONNECT_NAMESPACE_DETAILS_BEGIN namespace details {
+#define CONNECT_NAMESPACE_DETAILS_END }
+#elif CONNECT_NAMESPACE_DETAILS_INLINE == 1
+#define CONNECT_NAMESPACE_DETAILS_BEGIN inline namespace details {
+#define CONNECT_NAMESPACE_DETAILS_END }
+#else
+#error
 #endif
